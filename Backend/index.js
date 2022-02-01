@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require("cors");
 const routes = require("./app/routes/customer.routes.js");
 const app = express();
-
+//*********************//
 app.use(cors());
 app.options("*", cors());
 

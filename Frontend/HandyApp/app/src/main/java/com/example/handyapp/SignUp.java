@@ -1,3 +1,4 @@
+
 package com.example.handyapp;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +49,7 @@ public class SignUp extends AppCompatActivity {
         //Button
         signUpBtn = findViewById(R.id.buttonSignUp);
 
+        //button onclick listener
         signUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -51,6 +51,9 @@ public class Login extends AppCompatActivity {
                 if(!email.isEmpty() && !pass.isEmpty())
                 {
                     progressBar.setVisibility(View.VISIBLE);
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 else
                 {

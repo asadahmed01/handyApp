@@ -30,7 +30,7 @@ public class SignUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        //text feilds
+        //text fields
         textInputEditTextFullName =   findViewById(R.id.fullname);
         textInputEditTextEmail =  findViewById(R.id.email);
         textInputEditTextUserName = findViewById(R.id.username);

@@ -4,19 +4,17 @@
     android:layout_height="match_parent">
 
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
-
         <LinearLayout
+            android:id="@+id/categoryArea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="vertical">
-
 
 
             <TextView
@@ -36,28 +34,26 @@
                 android:layout_height="150dp">
 
 
-
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     android:layout_margin="20dp">
 
 
-                <TextView
-                    android:id="@+id/housePainting"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_corner"
-                    android:backgroundTint="@color/LightYellow"
-                    android:contextClickable="true"
-                    android:fontFamily="@font/poppinsbold"
-                    android:gravity="center_vertical"
-                    android:onClick="whichTextClicked"
-                    android:padding="20dp"
-                    android:text="@string/house_painting"
-                    android:textColor="@color/black"
-                    android:textSize="24sp" />
+                    <TextView
+                        android:id="@+id/housePainting"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_corner"
+                        android:backgroundTint="@color/LightYellow"
+                        android:contextClickable="true"
+                        android:fontFamily="@font/poppinsbold"
+                        android:gravity="center_vertical"
+                        android:onClick="whichTextClicked"
+                        android:padding="20dp"
+                        android:text="@string/house_painting"
+                        android:textColor="@color/black"
+                        android:textSize="24sp" />
                 </RelativeLayout>
 
                 <ImageView
@@ -66,8 +62,8 @@
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="-5dp"
                     android:layout_marginEnd="40dp"
-                    android:src="@drawable/ic_paiting"
-                    android:background="@drawable/rounded_corner"/>
+                    android:background="@drawable/rounded_corner"
+                    android:src="@drawable/ic_paiting" />
 
             </RelativeLayout>
 
@@ -100,10 +96,10 @@
                 </RelativeLayout>
 
                 <ImageView
-                    android:layout_marginLeft="30dp"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="-5dp"
                     android:layout_marginRight="40dp"
                     android:src="@drawable/ic_taxi" />
@@ -127,10 +123,10 @@
                         android:backgroundTint="@color/LightYellow"
                         android:fontFamily="@font/poppinsbold"
                         android:gravity="center_vertical"
+                        android:onClick="whichTextClicked"
                         android:padding="20dp"
                         android:text="@string/plumbing"
                         android:textColor="@color/black"
-                        android:onClick="whichTextClicked"
                         android:textSize="24sp" />
 
 
@@ -163,11 +159,11 @@
                         android:background="@drawable/rounded_corner"
                         android:backgroundTint="@color/LightYellow"
                         android:fontFamily="@font/poppinsbold"
+                        android:onClick="whichTextClicked"
                         android:padding="20dp"
                         android:text="@string/cleaning_service"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/black"
-                        android:onClick="whichTextClicked"
                         android:textSize="24sp" />
 
 
@@ -177,13 +173,11 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="-5dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="-5dp"
                     android:src="@drawable/ic_cleaning" />
 
             </RelativeLayout>
-
-
 
 
             <RelativeLayout
@@ -204,10 +198,10 @@
                         android:backgroundTint="@color/LightYellow"
                         android:fontFamily="@font/poppinsbold"
                         android:gravity="center_vertical"
+                        android:onClick="whichTextClicked"
                         android:padding="20dp"
                         android:text="@string/photography"
                         android:textColor="@color/black"
-                        android:onClick="whichTextClicked"
                         android:textSize="24sp" />
 
 
@@ -240,11 +234,11 @@
                         android:background="@drawable/rounded_corner"
                         android:backgroundTint="@color/LightYellow"
                         android:fontFamily="@font/poppinsbold"
+                        android:onClick="whichTextClicked"
                         android:padding="20dp"
                         android:text="@string/food_service"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/black"
-                        android:onClick="whichTextClicked"
                         android:textSize="24sp" />
 
 
@@ -254,8 +248,8 @@
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_alignParentLeft="true"
-                    android:layout_marginTop="-5dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="-5dp"
                     android:src="@drawable/ic_foodservice" />
 
             </RelativeLayout>

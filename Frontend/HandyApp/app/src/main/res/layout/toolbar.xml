@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbaridd"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="?attr/actionBarSize"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:elevation="40dp"
+    app:title="House Painting"
+    app:titleMarginStart="90dp"
+    app:titleTextColor="@android:color/darker_gray"
     android:background="@color/design_default_color_primary"
-    android:src="@drawable/ic_back"
-    >
+    app:navigationIcon="?android:attr/homeAsUpIndicator">
 
-
-</com.google.android.material.appbar.MaterialToolbar>
+</androidx.appcompat.widget.Toolbar>

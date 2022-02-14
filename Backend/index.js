@@ -1,7 +1,9 @@
 const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
 const cors = require("cors");
-const routes = require("./app/routes/customer.routes.js");
+const customerRoutes = require("./app/routes/customer.routes.js");
+const sellerRoutes = require("./app/routes/seller.routes.js");
+const reviewsRoutes = require("./app/routes/reviews.routes.js");
 const app = express();
 //*********************//
 app.use(cors());
@@ -19,8 +21,18 @@ app.use(
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to Handy App application." });
 });
-app.use("/customers", require("./app/routes/customer.routes"));
-//require("./app/routes/customer.routes.js")(app);
+app.use("/customers", customerRoutes);
+app.use("/sellers", sellerRoutes);
+app.use("/reviews", reviewsRoutes);
+// Handling Errors
+app.use((err, req, res, next) => {
+  // console.log(err);
+  err.statusCode = err.statusCode || 500;
+  err.message = err.message || "Internal Server Error";
+  res.status(err.statusCode).json({
+    message: err.message,
+  });
+});
 
 // set port, listen for requests
 const PORT = process.env.PORT || 3001;

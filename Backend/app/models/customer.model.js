@@ -96,4 +96,25 @@ Customer.updateById = (id, customer, result) => {
     }
   );
 };
+
+Customer.getAddress = (id, result) => {
+  sql.query(
+    `SELECT streetNumber, streetName, province, country, postalcode FROM address  WHERE customerID ="${id}"`,
+    (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("found customer: ", res);
+      result(null, res);
+      return;
+
+      // not found customer with the id
+      // result({ kind: "not_found" }, null);
+    }
+  );
+};
+
 module.exports = Customer;

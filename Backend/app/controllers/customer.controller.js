@@ -68,8 +68,6 @@ exports.update = (req, res) => {
     });
   }
 
-  console.log(req.body);
-
   Customer.updateById(req.params.id, new Customer(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
@@ -112,4 +110,28 @@ exports.register = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+//get the customer address
+exports.retrieveAddress = (req, res) => {
+  // Validate Request
+  if (!req.body) {
+    res.status(400).send({
+      message: "Content can not be empty!",
+    });
+  }
+
+  Customer.getAddress(req.params.id, (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          message: `Not found Customer with id ${req.params.id}.`,
+        });
+      } else {
+        res.status(500).send({
+          message: "Error updating Customer with id " + req.params.id,
+        });
+      }
+    } else res.send(data);
+  });
 };

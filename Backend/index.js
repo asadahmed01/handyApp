@@ -4,6 +4,7 @@ const cors = require("cors");
 const customerRoutes = require("./app/routes/customer.routes.js");
 const sellerRoutes = require("./app/routes/seller.routes.js");
 const reviewsRoutes = require("./app/routes/reviews.routes.js");
+const addressRoutes = require("./app/routes/address.routes.js");
 const app = express();
 //*********************//
 app.use(cors());
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/customers", customerRoutes);
 app.use("/sellers", sellerRoutes);
 app.use("/reviews", reviewsRoutes);
+app.use("/address", addressRoutes);
 // Handling Errors
 app.use((err, req, res, next) => {
   // console.log(err);

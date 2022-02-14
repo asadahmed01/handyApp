@@ -1,5 +1,5 @@
 const sql = require("./db.js");
-const bcrypt = require("bcryptjs");
+
 // constructor for the customer object
 const Review = function (review) {
   this.customerID = review.customerID;
@@ -35,6 +35,24 @@ Review.getAll = (result) => {
     //console.log("customers: ", res);
     result(null, res);
   });
+};
+
+//get reviews of a specific seller
+
+Review.findById = (id, result) => {
+  sql.query(
+    `SELECT customerID, description, score, date FROM reviews WHERE sellerID ="${id}"`,
+    async (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("found reviews: ", res);
+      result(null, res);
+      return;
+    }
+  );
 };
 
 module.exports = Review;

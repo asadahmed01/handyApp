@@ -1,5 +1,6 @@
 const sql = require("./db.js");
 const bcrypt = require("bcryptjs");
+
 // constructor for the customer object
 const Customer = function (customer) {
   this.email = customer.email;

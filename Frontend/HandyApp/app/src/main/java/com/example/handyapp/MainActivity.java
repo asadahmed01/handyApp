@@ -5,12 +5,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+
+import org.w3c.dom.Text;
 
 import java.util.Stack;
 
@@ -22,6 +26,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         stack = new Stack<Fragment>();
         setContentView(R.layout.activity_main);
+
+
+
+
 
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public void whichTextClicked(View view)
     {
         //Fragment childFragment = null;
+
         switch (view.getId())
         {
             case R.id.carRental:

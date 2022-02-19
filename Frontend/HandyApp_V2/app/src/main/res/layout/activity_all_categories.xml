@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/categID"
+    android:background="@color/white"
+    tools:context="Activities.AllCategoriesActivity">
+
+
+
+
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_above="@+id/bottom_navigation">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/secondlin"
+        android:orientation="vertical">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back_button"
+        android:layout_marginTop="55dp"
+        android:layout_marginStart="24dp"
+        android:id="@+id/imgBack"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp"
+        android:layout_marginStart="24dp"
+        android:textSize="24sp"
+        android:text="@string/categories"
+        android:textColor="@color/txt_black_333333"
+        android:fontFamily="@font/roboto_black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/all_categories"
+            android:textColor="@color/hint_gray_a1a1a1"
+            android:textSize="16sp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:id="@+id/rvAllCategory"
+        android:overScrollMode="always"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="6dp" />
+
+    </LinearLayout>
+</FrameLayout>
+
+    <include layout="@layout/navigation_buttomm_view" />
+
+
+</RelativeLayout>

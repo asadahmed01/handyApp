@@ -44,19 +44,23 @@ exports.findAll = (req, res) => {
 
 // Find a single Customer by Id
 exports.findOne = (req, res) => {
-  Customer.findById(req.body, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Customer with id ${req.params.id}.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Customer with id " + req.params.id,
-        });
-      }
-    } else res.send(data);
-  });
+  Customer.LoginUser(req.body, res);
+  // Customer.findById(req.body, (err, data) => {
+  //   if (err) {
+  //     if (err.kind === "not_found") {
+  //       res.status(404).send({
+  //         message: `Not found Customer .`,
+  //       });
+  //     } else {
+  //       res.status(500).send({
+  //         message: "Password does not match",
+  //       });
+  //     }
+  //   } else {
+  //     console.log(data);
+  //     res.send(data);
+  //   }
+  // });
 };
 
 // Update a Customer identified by the id in the request

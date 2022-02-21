@@ -1,6 +1,6 @@
 const sql = require("./db.js");
 const bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
 // constructor for the customer object
 const Customer = function (customer) {
   this.email = customer.email;
@@ -42,24 +42,30 @@ Customer.getAll = (result) => {
 };
 
 Customer.findById = (user, result) => {
-  console.log(user);
+  //const passMatch = await bcrypt.compare(user.password, res[0].password);
   sql.query(
-    `SELECT * FROM customers WHERE email = "${user.email}"`,
+    `SELECT * FROM customers WHERE email = "${user.email}";`,
     async (err, res) => {
       if (err) {
-        console.log("error: ", err);
-        result(err, null);
-        return;
+        return result(err, null);
       }
-
       const passMatch = await bcrypt.compare(user.password, res[0].password);
       if (!passMatch) {
-        result(err, null);
+        return result({ message: "Password does not match" }, null);
       }
 
       if (res.length) {
-        console.log("found customer: ", res[0]);
+        // const token = jwt.sign(
+        //   { id: result[0] },
+        //   "vnSAae3W.KB;puQ/qr:b[?#{enFr&5QkbV[#76{k-@P)3gK/XyKzt@3.26",
+        //   { expiresIn: "1h" }
+        // );
+        // const data = {
+        //   token,
+        //   user: res[0],
+        // };
         result(null, res[0]);
+
         return;
       }
 
@@ -114,6 +120,50 @@ Customer.getAddress = (id, result) => {
 
       // not found customer with the id
       // result({ kind: "not_found" }, null);
+    }
+  );
+};
+
+Customer.LoginUser = (user, res) => {
+  sql.query(
+    `SELECT * FROM customers WHERE email = "${user.email}";`,
+    (err, result) => {
+      // user does not exists
+      if (err) {
+        return res.status(400).send({
+          msg: err,
+        });
+      }
+      if (!result.length) {
+        return res.status(401).send({
+          msg: "Email or password is incorrect!",
+        });
+      }
+      // check password
+      bcrypt.compare(user.password, result[0]["password"], (bErr, bResult) => {
+        // wrong password
+        if (bErr) {
+          return res.status(401).send({
+            msg: "Email or password is incorrect!",
+          });
+        }
+        if (bResult) {
+          const token = jwt.sign(
+            { id: result[0] },
+            "the-super-strong-secrect",
+            { expiresIn: "1h" }
+          );
+
+          return res.status(200).send({
+            msg: "Logged in!",
+            token,
+            user: result[0],
+          });
+        }
+        return res.status(401).send({
+          msg: "Username or password is incorrect!",
+        });
+      });
     }
   );
 };

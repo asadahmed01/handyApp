@@ -55,20 +55,10 @@ Customer.findById = (user, result) => {
       }
 
       if (res.length) {
-        // const token = jwt.sign(
-        //   { id: result[0] },
-        //   "vnSAae3W.KB;puQ/qr:b[?#{enFr&5QkbV[#76{k-@P)3gK/XyKzt@3.26",
-        //   { expiresIn: "1h" }
-        // );
-        // const data = {
-        //   token,
-        //   user: res[0],
-        // };
         result(null, res[0]);
 
         return;
       }
-
       // not found customer with the id
       // result({ kind: "not_found" }, null);
     }

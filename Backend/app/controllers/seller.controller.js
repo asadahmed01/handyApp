@@ -5,9 +5,10 @@ const sql = require("../models/db.js");
 // Create and Save a new Customer
 exports.create = async (req, res) => {
   // Validate request
-  if (!req.body) {
+  const { email, password, description, fullname, category } = req.body;
+  if (!email || !password || !description || !fullname || !category) {
     return res.status(400).send({
-      message: "Content can not be empty!",
+      message: "All fields are required!",
     });
   }
   const hashPass = await bcrypt.hash(req.body.password, 12);
@@ -18,7 +19,7 @@ exports.create = async (req, res) => {
     password: hashPass,
     description: req.body.description,
     fullname: req.body.fullname,
-    categoryID: req.body.categoryID,
+    category: req.body.category,
   });
 
   // Save customer in the database
@@ -76,13 +77,13 @@ exports.register = async (req, res, next) => {
     const hashPass = await bcrypt.hash(req.body.password, 12);
     console.log(hashPass);
     const rows = sql.query(
-      "INSERT INTO `seller`(`email`,`password`, `fullname`, `description`, `categoryID`) VALUES(?,?,?,?)",
+      "INSERT INTO `seller`(`email`,`password`, `fullname`, `description`, `category`) VALUES(?,?,?,?)",
       [
         req.body.email,
         hashPass,
         req.body.fullname,
         req.body.description,
-        req.body.categoryID,
+        req.body.category,
       ]
     );
 
@@ -119,4 +120,10 @@ exports.retrieveAddress = (req, res) => {
       }
     } else res.send(data);
   });
+};
+
+// Find a single Customer by Id
+exports.Login = (req, res) => {
+  console.log(req.body);
+  Seller.LoginUser(req.body, res);
 };

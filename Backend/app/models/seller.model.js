@@ -1,8 +1,10 @@
 const sql = require("./db.js");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 // constructor for the customer object
 const Seller = function (seller) {
-  this.categoryID = seller.categoryID;
+  this.category = seller.category;
   this.password = seller.password;
   this.fullname = seller.fullname;
   this.description = seller.description;
@@ -10,20 +12,25 @@ const Seller = function (seller) {
 };
 
 Seller.create = (seller, result) => {
-  var temp = sql.query("SELECT `email` FROM `seller` WHERE `email` = ?", [
-    seller.email,
-  ]);
-  //console.log(temp);
-  sql.query("INSERT INTO seller SET ?", seller, (err, res) => {
-    if (err) {
-      console.log("Error: ", err.code);
-      result(err, null);
-      return;
+  sql.query(
+    `SELECT email FROM seller WHERE email = '${seller.email}'`,
+    (err, response) => {
+      if (response.length) {
+        return result({ message: "Email already is in use" }, null);
+      } else {
+        sql.query("INSERT INTO seller SET ?", seller, (err, res) => {
+          if (err) {
+            console.log("Error: ", err.code);
+            result(err, null);
+            return;
+          }
+          result(null, { ...seller });
+        });
+      }
     }
+  );
 
-    //console.log("created customer: ", { id: res.insertId, ...newCustomer });
-    result(null, { ...seller });
-  });
+  //console.log(temp);
 };
 
 Seller.getAll = (result) => {
@@ -87,6 +94,50 @@ Seller.getAddress = (id, result) => {
 
       // not found customer with the id
       // result({ kind: "not_found" }, null);
+    }
+  );
+};
+
+Seller.LoginUser = (user, res) => {
+  sql.query(
+    `SELECT * FROM seller WHERE email = "${user.email}";`,
+    (err, result) => {
+      // user does not exists
+      if (err) {
+        return res.status(400).send({
+          msg: err,
+        });
+      }
+      if (!result.length) {
+        return res.status(401).send({
+          msg: "Email or password is incorrect!",
+        });
+      }
+      // check password
+      bcrypt.compare(user.password, result[0]["password"], (bErr, bResult) => {
+        // wrong password
+        if (bErr) {
+          return res.status(401).send({
+            msg: "Email or password is incorrect!",
+          });
+        }
+        if (bResult) {
+          const token = jwt.sign(
+            { id: result[0] },
+            "the-super-strong-secrect",
+            { expiresIn: "1h" }
+          );
+
+          return res.status(200).send({
+            msg: "Logged in!",
+            token,
+            user: result[0],
+          });
+        }
+        return res.status(401).send({
+          msg: "Username or password is incorrect!",
+        });
+      });
     }
   );
 };

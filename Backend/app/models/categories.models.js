@@ -31,3 +31,5 @@ Category.getAll = (result) => {
     result(null, res);
   });
 };
+
+module.exports = Category;

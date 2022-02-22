@@ -26,4 +26,24 @@ Address.create = (address, result) => {
   });
 };
 
+Address.UpdateAddress = (address, result) => {
+  // if ("sellerID" in req) console.log("sellerID");
+  let queryID;
+  "sellerID" in address ? (queryID = "sellerID") : (queryID = "customerID");
+  const queryValue = address[queryID];
+  console.log(
+    `UPDATE address SET streetNumber="${address.streetNumber}", streetName="${address.streetName}", province="${address.province}", country="${address.country}", postalcode="${address.postalcode}" WHERE "${queryID}" =${queryValue};`
+  );
+  sql.query(
+    `UPDATE address SET streetNumber="${address.streetNumber}", streetName="${address.streetName}", province="${address.province}", country="${address.country}", postalcode="${address.postalcode}" WHERE ${queryID} = ${queryValue};`,
+    (err, res) => {
+      if (err) {
+        return result(err, null);
+      }
+
+      return result(null, { message: "Updated successfully!" });
+    }
+  );
+};
+
 module.exports = Address;

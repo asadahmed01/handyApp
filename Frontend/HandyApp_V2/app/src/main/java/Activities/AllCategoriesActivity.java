@@ -7,20 +7,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import Adapters.AllCategoryAdapter;
+import CategoriesApiCalls.ApiClient;
+import CategoriesApiCalls.CategoriesResponse;
 import Data.CategoryData;
+
+
+import LoginApiCalls.LoginResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 import com.example.handyapp_v2.R;
 import com.example.handyapp_v2.SearchActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllCategoriesActivity extends AppCompatActivity {
-
+    //list of all categories
+    List<CategoriesResponse> categories = new ArrayList<>();
     BottomNavigationView bottomNav;
     Integer[] imgBg = {R.drawable.category_img1, R.drawable.category_img2,
             R.drawable.category_img3, R.drawable.category_img4,
@@ -34,12 +47,16 @@ public class AllCategoriesActivity extends AppCompatActivity {
     private ArrayList<CategoryData> categoryData;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_all_categories);
 
-
+        ArrayList<CategoriesResponse> myList = (ArrayList<CategoriesResponse>) getIntent().getSerializableExtra("cat");
+        Log.d("TAG", "response 33: " + myList.get(0).getCategoryName() );
+        Toast.makeText( AllCategoriesActivity.this, "SIZE "+ myList.size() , Toast.LENGTH_LONG).show();
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener((item) ->{
 
@@ -70,6 +87,7 @@ public class AllCategoriesActivity extends AppCompatActivity {
         findViewById(R.id.imgBack).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 onBackPressed();
             }
         });
@@ -89,12 +107,16 @@ public class AllCategoriesActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         categoryData = new ArrayList<>();
 
-        for (int i = 0; i < imgBg.length; i++) {
-            CategoryData model = new CategoryData(imgBg[i], tvTitle[i]);
+        Toast.makeText( AllCategoriesActivity.this, "SIZE "+ myList.size() , Toast.LENGTH_LONG).show();
+        for (int i = 0; i < categories.size(); i++) {
+            CategoryData model = new CategoryData(imgBg[i], categories.get(i).getCategoryName());
             categoryData.add(model);
         }
         allCategoryAdapter = new AllCategoryAdapter(AllCategoriesActivity.this, categoryData);
         recyclerView.setAdapter(allCategoryAdapter);
 
+
     }
+
+
 }

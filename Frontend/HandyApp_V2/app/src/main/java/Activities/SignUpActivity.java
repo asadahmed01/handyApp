@@ -1,5 +1,6 @@
 package Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,9 +17,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-
+import android.widget.Toast;
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -31,11 +41,19 @@ public class SignUpActivity extends AppCompatActivity {
     TextView login;
 
 
+    //------- FireBase init --------//
+    FirebaseAuth auth;
+    DatabaseReference reference;
+
+
     EditText email_txt;
     EditText address_txt;
     EditText password_txt;
     EditText userName_txt;
 
+    String userName;
+    String userPassword;
+    String userEmail;
 
     Button createAccountBtn;
     private int passwordNotVisible = 1;
@@ -43,6 +61,10 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        FirebaseApp.initializeApp(this);
+
+        auth = FirebaseAuth.getInstance();
+
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
@@ -67,6 +89,9 @@ public class SignUpActivity extends AppCompatActivity {
         address_txt = findViewById(R.id.userAddresstxt);
         userName_txt = findViewById(R.id.userNametxt);
 
+
+
+        //---------Getting ALL USER ENTRY----------//
 
 
 
@@ -99,11 +124,28 @@ public class SignUpActivity extends AppCompatActivity {
         scrollview.setDescendantFocusability(ViewGroup.FOCUS_AFTER_DESCENDANTS);
 
         createAccountBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(),AllCategoriesActivity.class);
-                startActivity(intent);
+                userName = userName_txt.getText().toString();
+                userPassword = password_txt.getText().toString();
+                userEmail = email_txt.getText().toString();
+                if((userName.matches(" ")))
+                {
+                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //connect to firebase here and save all the information and proceed to the next activity.
+                    //Toast.makeText(getApplicationContext(),userName,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),userEmail,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),userPassword,Toast.LENGTH_SHORT).show();
+                    register(userName,userEmail,userPassword);
+
+                }
+
+
             }
         });
 
@@ -162,9 +204,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-
-
-
     private void register(String userName, String userEmail, String userPassword)
     {
         auth.createUserWithEmailAndPassword(userEmail,userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -197,6 +236,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+
 
 
 }

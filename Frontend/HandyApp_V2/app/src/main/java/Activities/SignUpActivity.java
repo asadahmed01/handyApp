@@ -163,4 +163,40 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
+
+
+    private void register(String userName, String userEmail, String userPassword)
+    {
+        auth.createUserWithEmailAndPassword(userEmail,userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful())
+                {
+                    FirebaseUser firebaseUser = auth.getCurrentUser();
+                    assert firebaseUser != null;
+                    String userID = firebaseUser.getUid();
+
+                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
+                    HashMap<String,String> hashMap = new HashMap<>();
+                    hashMap.put("id",userID);
+                    hashMap.put("username",userName);
+
+                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                Intent intent = new Intent(getApplicationContext(),AllCategoriesActivity.class);
+                                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+
 }

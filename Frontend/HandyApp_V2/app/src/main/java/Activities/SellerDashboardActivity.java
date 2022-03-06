@@ -1,5 +1,6 @@
 package Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -10,11 +11,15 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -36,7 +41,7 @@ public class SellerDashboardActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tablayout);
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        //checkUsername();
+        checkUsername();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tabLayout.getTabAt(2).getIcon().setTintList(ColorStateList.valueOf(Color.parseColor("#BDBDBD")));
@@ -87,6 +92,40 @@ public class SellerDashboardActivity extends AppCompatActivity {
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private void checkUsername() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            firestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    if (!task.getResult().contains("username")) {
+                                        Toast.makeText(SellerDashboardActivity.this, "Please Set your username", Toast.LENGTH_SHORT).show();
+                                        Intent usernameintent = new Intent(SellerDashboardActivity.this, UsernameActivity.class);
+                                        startActivity(usernameintent);
+                                        finish();
+                                    }
+                                }
+                            } else
+                                {
+                                String error = task.getException().getMessage();
+                                Toast.makeText(SellerDashboardActivity.this, error, Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+
+
+                    });
+        }
+        else {
+            Toast.makeText(SellerDashboardActivity.this, "You are in Guest mode", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
 }

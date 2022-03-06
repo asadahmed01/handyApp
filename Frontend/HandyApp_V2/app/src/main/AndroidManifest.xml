@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HandyApp_V2">
         <activity
+            android:name="Activities.BuyerDashboardActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.SellerDashboardActivity"
             android:exported="false" />
         <activity
@@ -38,7 +41,7 @@
         </activity>
         <activity
             android:name="Activities.MainActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package Fragments;
+package Activities.fragments;
 
 import android.graphics.ColorSpace;
 import android.os.Bundle;

@@ -2,7 +2,9 @@ package Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -43,24 +45,12 @@ public class SellerDashboardActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-               // setFragment(tab.getPosition());
+                setFragment(tab.getPosition());
 
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     tab.getIcon().setTintList(ColorStateList.valueOf(getResources().getColor(R.color.red_d86041)));
                 }
 
-               /* if (tab.getPosition() != 3) {
-                    tabPosition = tab.getPosition();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        tab.getIcon().setTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorAccent)));
-                    }
-                } else {
-                    tabLayout.getTabAt(tabPosition).select();
-                }*/
-              /*  if (tab.getPosition() == 2) {
-                    Intent intent = new Intent(MainActivity.this, AddControlActivity.class);
-                    startActivity(intent);
-                }*/
 
             }
 
@@ -69,9 +59,6 @@ public class SellerDashboardActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     tab.getIcon().setTintList(ColorStateList.valueOf(Color.parseColor("#BDBDBD")));
                 }
-              /*  if (tab.getPosition() != 2) {
-
-                }*/
             }
 
             @Override
@@ -82,8 +69,24 @@ public class SellerDashboardActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tabLayout.getTabAt(0).getIcon().setTintList(ColorStateList.valueOf(getResources().getColor(R.color.red_light_ffe0de)));
         }
-       // setFragment(0);
+        setFragment(0);
 
 
     }
+
+    public void setFragment(int position) {
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+        fragmentTransaction.replace(frameLayout.getId(), fragmentList.get(position));
+        fragmentTransaction.commit();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 }

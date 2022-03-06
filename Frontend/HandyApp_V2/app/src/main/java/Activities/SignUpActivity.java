@@ -71,8 +71,6 @@ public class SignUpActivity extends AppCompatActivity {
     private int passwordNotVisible = 1;
 
     FirebaseFirestore db;
-    FirebaseAuth auth;
-    DatabaseReference reference;
     RelativeLayout loading;
     String UserType = "";
     GoogleSignInClient googleSignInClient;

@@ -26,6 +26,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
@@ -36,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -206,10 +209,12 @@ public class SignUpActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
     }
+
 
 
     public void ChangeCards(View v) {
@@ -225,6 +230,48 @@ public class SignUpActivity extends AppCompatActivity {
 
     }
 
+    private void saveDataOfUser(FirebaseUser user) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Map<String,Object> users = new HashMap<>();
+        users.put("email",email_txt.getText().toString());
+        users.put("usertype",UserType);
+        users.put("username",userName_txt.getText().toString());
+        users.put("Address",address_txt.getText().toString());
+        users.put("uid",uid);
+        users.put("imageURL","default");
+
+
+
+        db.collection("users")
+                .document(uid)
+                .set(users)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+
+                        String txt_username = userName_txt.getText().toString();
+                        String txt_email = email_txt.getText().toString();
+                        String txt_password = password_txt.getText().toString();
+
+                        register(txt_username,txt_email,txt_password);
+
+
+//                        Toast.makeText(SignUpActivity.this, "Profile has been set", Toast.LENGTH_SHORT).show();
+
+                        SharedPreferences sharedPreferences = getSharedPreferences("user",MODE_PRIVATE);
+                        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                        myEdit.putString("user", UserType);
+                        myEdit.commit();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SignUpActivity.this, "Something went Wrong:  "+e, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
     //1. means the user selected the buyer card.

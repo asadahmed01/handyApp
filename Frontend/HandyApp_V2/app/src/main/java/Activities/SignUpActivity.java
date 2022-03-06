@@ -30,9 +30,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -217,6 +219,8 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
+
+
     public void ChangeCards(View v) {
         switch (v.getId()) {
             case R.id.sellerRegister:
@@ -273,6 +277,62 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    private void googleSignIn() {
+        Intent signInIntent = googleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void firebaseAuthWithGoogle(String idToken) {
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(SignUpActivity.this, "signInWithCredential:success", Toast.LENGTH_SHORT).show();
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInWithCredential:success");
+
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            uploaddatatofirestore(user);
+//                            updateUI(user);
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "signInWithCredential:faild", Toast.LENGTH_SHORT).show();
+
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInWithCredential:failure", task.getException());
+//                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
+    private void uploaddatatofirestore(FirebaseUser user) {
+        loading.setVisibility(View.VISIBLE);
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Map<String,Object> users = new HashMap<>();
+        users.put("email",user.getEmail());
+        users.put("uid",uid);
+        users.put("imageURL","default");
+        db.collection("users")
+                .document(uid)
+                .set(users)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        loading.setVisibility(View.GONE);
+                        Intent intent = new Intent(SignUpActivity.this, SellerDashboardActivity.class);
+                        startActivity(intent);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(SignUpActivity.this, "Something went Wrong:  "+e, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+    
 
     //1. means the user selected the buyer card.
     //2. means the user selected the seller card.

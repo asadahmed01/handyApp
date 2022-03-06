@@ -14,10 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.handyapp_v2.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,15 +36,17 @@ import retrofit2.Response;
 public class LoginActivity extends AppCompatActivity {
 
     /*----- Variable Define --------*/
-    List<CategoriesResponse> categories = new ArrayList<>();
-    ArrayList<CategoriesResponse> myList;
+
     EditText password_et, email;
     ImageView password_show, password_hide;
     FrameLayout frame_eye;
     Button loginBtn;
     private int passwordNotVisible = 1;
     TextView signUptxt;
-    List<LoginResponse> users = new ArrayList<>();
+    private FirebaseAuth mAuth;
+    RelativeLayout loading;
+    TextView GoogleSignin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
-        myList = new ArrayList<>();
+
         password_et = findViewById(R.id.password_et);
         frame_eye = findViewById(R.id.frame_eye);
         password_show = findViewById(R.id.password_show);
@@ -61,6 +65,10 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         signUptxt = findViewById(R.id.signUpbtn);
         email = findViewById(R.id.email_login);
+        loading = findViewById(R.id.loading);
+        GoogleSignin = findViewById(R.id.btn_google_signin);
+
+        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -87,18 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
-                //check if email and password is empty
-                if(isFieldEmpty(email.getText().toString()) || isFieldEmpty(password_et.getText().toString())){
-                    Toast.makeText(LoginActivity.this, "Email and password required", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    loginUser();
-                    getCategories();
-                    Intent intent = new Intent(getApplicationContext(), AllCategoriesActivity.class);
-                    intent.putExtra("cat", (Serializable) categories);
-                    startActivity(intent);
-                }
+                loading.setVisibility(View.VISIBLE);
             }
         });
 
@@ -119,68 +116,7 @@ public class LoginActivity extends AppCompatActivity {
         return TextUtils.isEmpty(field) ? true : false;
     }
 
-    //login method
-    public void loginUser(){
-        UserLogin loginRequest = new UserLogin();
-        loginRequest.setUsername(email.getText().toString());
-        loginRequest.setPassword(password_et.getText().toString());
-
-        Call<List< LoginResponse>> loginResponseCall  = ApiClient.getuserservice().userLogin();
-        loginResponseCall.enqueue(new Callback<List <LoginResponse>> () {
-            @Override
-            public void onResponse(Call<List < LoginResponse>> call, Response<List < LoginResponse>> response) {
-                if(response.isSuccessful()){
-                    //Log.e("TAG", "response 33: " +response.body() );
-                    users = response.body();
-                    //Toast.makeText( LoginActivity.this, "FullName "+users , Toast.LENGTH_LONG).show();
-//                    for(LoginResponse user : users){
-//                        Toast.makeText( LoginActivity.this, "FullName "+user.getFullname() , Toast.LENGTH_LONG).show();
-//                        Log.d("TAG", "Name: " +user.getFullname() );
-//                    }
-
-                }
-                else{
-                    Toast.makeText(LoginActivity.this,response.errorBody().toString(),Toast.LENGTH_SHORT).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List <LoginResponse>> call, Throwable t) {
-                Toast.makeText( LoginActivity.this, "Login failed "+ t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    //get all categories from the backend
-    public void getCategories(){
-        Call<List<CategoriesResponse>> categoriesResponseCall  =  CategoriesApiCalls.ApiClient.getCategoryService().categoryList();
-        categoriesResponseCall.enqueue(new Callback<List<CategoriesResponse>>() {
-            @Override
-            public void onResponse(Call<List<CategoriesResponse>> call, Response<List<CategoriesResponse>> response) {
-
-                if(response.isSuccessful()){
-                    Log.e("TAG", "response: " +response.body() );
-                    categories = response.body();
-                    myList = (ArrayList<CategoriesResponse>)  response.body();
-                    ///Toast.makeText( AllCategoriesActivity.this, "Category "+categories , Toast.LENGTH_LONG).show();
-                    for(int i = 0; i < response.body().size(); i++){
-                       categories.add(  response.body().get(i));
-                    }
-
-                }
-                else{
-
-                    Log.d("TAG", "ERROOOOOOOOOOOOR:" + response.errorBody().toString());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<CategoriesResponse>> call, Throwable t) {
 
 
-            }
-        });
-    }
+
 }

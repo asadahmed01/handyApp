@@ -332,7 +332,7 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
-    
+
 
     //1. means the user selected the buyer card.
     //2. means the user selected the seller card.

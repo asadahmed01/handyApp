@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -102,7 +103,7 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        
+
 
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
@@ -167,20 +168,31 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                userName = userName_txt.getText().toString();
-                userPassword = password_txt.getText().toString();
-                userEmail = email_txt.getText().toString();
-                if((userName.matches(" ")))
-                {
-                    Toast.makeText(getApplicationContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
+                if (UserType.equals("")){
+                    Toast.makeText(SignUpActivity.this, "kindly select usertype", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
-                    //connect to firebase here and save all the information and proceed to the next activity.
-                    //Toast.makeText(getApplicationContext(),userName,Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(),userEmail,Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(),userPassword,Toast.LENGTH_SHORT).show();
-                    register(userName,userEmail,userPassword);
+                else {
+                    loading.setVisibility(View.VISIBLE);
+
+                    mAuth.createUserWithEmailAndPassword(email_txt.getText().toString(), password_txt.getText().toString())
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d("TAG", "createUserWithEmail:success");
+                                        FirebaseUser user = mAuth.getCurrentUser();
+                                        saveDataOfUser(user);
+
+                                    } else {
+                                        loading.setVisibility(View.GONE);
+                                        // If sign in fails, display a message to the user.
+                                        Log.w("TAG", "createUserWithEmail:failure", task.getException());
+                                        Toast.makeText(SignUpActivity.this, "Authentication failed." + task.getException(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+
 
                 }
 

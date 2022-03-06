@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -15,10 +16,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.handyapp_v2.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -27,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
@@ -57,13 +63,46 @@ public class SignUpActivity extends AppCompatActivity {
 
     Button createAccountBtn;
     private int passwordNotVisible = 1;
+
+    FirebaseFirestore db;
+    FirebaseAuth auth;
+    DatabaseReference reference;
+    RelativeLayout loading;
+    String UserType = "";
+    GoogleSignInClient googleSignInClient;
+    FirebaseAuth mAuth;
+    TextView GoogleSignin;
+    int RC_SIGN_IN = 1;
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        FirebaseApp.initializeApp(this);
+        GoogleSignin = findViewById(R.id.btn_google_signin);
 
+        loading = findViewById(R.id.loading);
+
+
+        mAuth = FirebaseAuth.getInstance();
         auth = FirebaseAuth.getInstance();
+
+
+        db = FirebaseFirestore.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken("153302111375-jrqv1e68fu2q6pjabddgp1vud2lcn9bl.apps.googleusercontent.com")
+                .requestEmail()
+                .build();
+
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                googleSignIn();
+            }
+        });
+
+        
 
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
@@ -235,6 +274,16 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent(SignUpActivity.this, SellerDashboardActivity.class);
+            startActivity(intent);
+        }
     }
 
 

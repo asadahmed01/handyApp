@@ -2,6 +2,8 @@ package Activities.fragments;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -26,15 +28,7 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -42,6 +36,23 @@ public class HomeFragment extends Fragment {
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        plumbing = view.findViewById(R.id.plumbing);
+        cleaning = view.findViewById(R.id.cleaning);
+        photography = view.findViewById(R.id.photo);
+        carRepair = view.findViewById(R.id.car);
+        painting = view.findViewById(R.id.paint);
+        house = view.findViewById(R.id.house);
+        web = view.findViewById(R.id.web);
+        video = view.findViewById(R.id.video);
+
+        clickListner();
+
+
     }
 
     @Override

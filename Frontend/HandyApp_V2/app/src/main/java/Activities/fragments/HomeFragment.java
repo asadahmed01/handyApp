@@ -1,5 +1,6 @@
 package Activities.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,6 +53,74 @@ public class HomeFragment extends Fragment {
 
         clickListner();
 
+
+    }
+
+    private void clickListner() {
+        plumbing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "plumbing");
+                startActivity(intent);
+            }
+        });
+        cleaning.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "cleaning");
+                startActivity(intent);
+            }
+        });
+        photography.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "photography");
+                startActivity(intent);
+            }
+        });
+        carRepair.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "carrepair");
+                startActivity(intent);
+            }
+        });
+        painting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "painting");
+                startActivity(intent);
+            }
+        });
+        house.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "housework");
+                startActivity(intent);
+            }
+        });
+        web.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "webdevelopment");
+                startActivity(intent);
+            }
+        });
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ListActivity.class);
+                intent.putExtra("category", "photonvideo");
+                startActivity(intent);
+            }
+        });
 
     }
 

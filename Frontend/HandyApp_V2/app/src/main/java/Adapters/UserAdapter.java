@@ -9,12 +9,20 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.handyapp_v2.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
 
+import Activities.models.Chat;
 import Activities.models.usermodel.Model;
 
 public class UserAdapter extends RecyclerView .Adapter<UserAdapter.ViewHolder>{
@@ -51,4 +59,42 @@ public class UserAdapter extends RecyclerView .Adapter<UserAdapter.ViewHolder>{
             profile_image = itemView.findViewById(R.id.profile_image);
         }
     }
+
+
+    private void lastMessage(String userid, TextView last_msg)
+    {
+        thelastMessage = "default";
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("chats");
+
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshit) {
+                for(DataSnapshot snapshot : dataSnapshit.getChildren()){
+                    Chat chat = snapshot.getValue(Chat.class);
+                    if(chat.getReceiver().equals(firebaseUser.getUid())
+                            && chat.getSender().equals(userid) || chat.getReceiver().equals(userid)
+                            && chat.getSender().equals(firebaseUser.getUid())) {
+                        thelastMessage = chat.getMessage();
+                    }
+                }
+                switch (thelastMessage){
+                    case "default":
+                        last_msg.setText("Open Chat");
+                        break;
+                    default:
+                        last_msg.setText(thelastMessage);
+                        break;
+                }
+                thelastMessage = "default";
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
 }

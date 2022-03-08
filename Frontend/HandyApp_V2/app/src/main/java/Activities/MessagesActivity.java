@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Activities.models.Chat;
+import Activities.models.usermodel.Model;
 import Adapters.MessageAdapter;
 
 public class MessagesActivity extends AppCompatActivity {

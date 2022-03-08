@@ -1,15 +1,15 @@
 package Activities.fragments;
 
-import android.graphics.ColorSpace;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.handyapp_v2.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,11 +23,17 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.models.ChatList;
+import Activities.models.usermodel.Model;
+import Adapters.UserAdapter;
+
+
 public class MessagesFragment extends Fragment {
+
     private RecyclerView recyclerView;
 
     private UserAdapter userAdapter;
-    private List<ColorSpace.Model> mUsers;
+    private List<Model> mUsers;
 
     FirebaseUser fuser;
     DatabaseReference reference;
@@ -38,7 +44,7 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_messages, container, false);
+        View view =  inflater.inflate(R.layout.fragment_messages, container, false);
 
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -53,7 +59,7 @@ public class MessagesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 userList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ChatList chatlist = snapshot.getValue(ChatList.class);
                     userList.add(chatlist);
                 }
@@ -66,9 +72,10 @@ public class MessagesFragment extends Fragment {
 
             }
         });
+
+
         return view;
     }
-
 
     private void chatList() {
         mUsers = new ArrayList<>();
@@ -95,5 +102,4 @@ public class MessagesFragment extends Fragment {
             }
         });
     }
-
 }

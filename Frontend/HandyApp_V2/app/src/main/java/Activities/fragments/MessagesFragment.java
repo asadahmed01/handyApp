@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.models.ChatList;
+
 public class MessagesFragment extends Fragment {
     private RecyclerView recyclerView;
 

@@ -24,6 +24,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import Activities.models.ListModel;
+import Adapters.ListAdapter;
+
 
 public class SearchFragment extends Fragment {
 

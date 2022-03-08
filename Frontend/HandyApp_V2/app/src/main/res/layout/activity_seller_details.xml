@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        
+
     <ImageView
         android:id="@+id/imgBack"
         android:layout_width="wrap_content"
@@ -35,6 +35,30 @@
         android:text="@string/plumbing"
         android:textSize="24sp"
         />
+
+        <TextView
+            android:id="@+id/sellerprice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Price"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_black"
+            tools:layout_editor_absoluteX="66dp"
+            tools:layout_editor_absoluteY="252dp" />
+        <Button
+            android:id="@+id/make_payment"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:text="Send Amount"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:textSize="10dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/roboto_black"
+            tools:layout_editor_absoluteX="66dp"
+            tools:layout_editor_absoluteY="252dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

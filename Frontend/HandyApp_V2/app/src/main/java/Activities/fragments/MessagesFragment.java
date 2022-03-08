@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Activities.models.ChatList;
+import Activities.models.usermodel.Model;
+import Adapters.UserAdapter;
 
 public class MessagesFragment extends Fragment {
     private RecyclerView recyclerView;

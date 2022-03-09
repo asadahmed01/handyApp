@@ -27,6 +27,7 @@ import java.util.HashMap;
 import Activities.SellerDetailsActivity;
 import Activities.models.ListModel;
 import Activities.models.Review;
+
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
 
     Context context;

@@ -1,9 +1,5 @@
 package Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,16 +9,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import Adapters.AllCategoryAdapter;
-import CategoriesApiCalls.ApiClient;
-import CategoriesApiCalls.CategoriesResponse;
-import Data.CategoryData;
-
-
-import LoginApiCalls.LoginResponse;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.handyapp_v2.R;
 import com.example.handyapp_v2.SearchActivity;
@@ -31,9 +20,13 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
+import Adapters.AllCategoryAdapter;
+
+import Data.CategoryData;
+
 public class AllCategoriesActivity extends AppCompatActivity {
     //list of all categories
-    List<CategoriesResponse> categories = new ArrayList<>();
+
     BottomNavigationView bottomNav;
     Integer[] imgBg = {R.drawable.category_img1, R.drawable.category_img2,
             R.drawable.category_img3, R.drawable.category_img4,
@@ -54,9 +47,8 @@ public class AllCategoriesActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_all_categories);
 
-        ArrayList<CategoriesResponse> myList = (ArrayList<CategoriesResponse>) getIntent().getSerializableExtra("cat");
-        Log.d("TAG", "response 33: " + myList.get(0).getCategoryName() );
-        Toast.makeText( AllCategoriesActivity.this, "SIZE "+ myList.size() , Toast.LENGTH_LONG).show();
+
+
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener((item) ->{
 
@@ -102,7 +94,7 @@ public class AllCategoriesActivity extends AppCompatActivity {
 
 
 
-        recyclerView = findViewById(R.id.rvAllCategory);
+      /*  recyclerView = findViewById(R.id.rvAllCategory);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(AllCategoriesActivity.this,2);
         recyclerView.setLayoutManager(layoutManager);
         categoryData = new ArrayList<>();
@@ -113,7 +105,7 @@ public class AllCategoriesActivity extends AppCompatActivity {
             categoryData.add(model);
         }
         allCategoryAdapter = new AllCategoryAdapter(AllCategoriesActivity.this, categoryData);
-        recyclerView.setAdapter(allCategoryAdapter);
+        recyclerView.setAdapter(allCategoryAdapter);*/
 
 
     }

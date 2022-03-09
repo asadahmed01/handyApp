@@ -22,11 +22,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import Activities.fragments.HomeFragment;
+import Activities.fragments.MessagesFragment;
+import Activities.fragments.ProfileFragment;
+import Activities.fragments.SearchFragment;
+import Activities.fragments.SellerAddFragment;
 
 public class SellerDashboardActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    private HomeFragment home;
     private TabLayout tabLayout;
     private List<Fragment> fragmentList;
     private FrameLayout frameLayout;
@@ -42,6 +50,13 @@ public class SellerDashboardActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
         checkUsername();
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new HomeFragment());
+        fragmentList.add(new MessagesFragment());
+        fragmentList.add(new SellerAddFragment());
+        fragmentList.add(new SearchFragment());
+        fragmentList.add(new ProfileFragment());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tabLayout.getTabAt(2).getIcon().setTintList(ColorStateList.valueOf(Color.parseColor("#BDBDBD")));
@@ -106,9 +121,9 @@ public class SellerDashboardActivity extends AppCompatActivity {
                                 if (task.getResult().exists()) {
                                     if (!task.getResult().contains("username")) {
                                         Toast.makeText(SellerDashboardActivity.this, "Please Set your username", Toast.LENGTH_SHORT).show();
-                                        Intent usernameintent = new Intent(SellerDashboardActivity.this, UsernameActivity.class);
-                                        startActivity(usernameintent);
-                                        finish();
+                                        //Intent usernameintent = new Intent(SellerDashboardActivity.this, UsernameActivity.class);
+                                        //startActivity(usernameintent);
+                                        //finish();
                                     }
                                 }
                             } else

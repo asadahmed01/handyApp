@@ -17,11 +17,15 @@ import com.google.android.material.tabs.TabLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import Activities.fragments.HomeFragment;
 import Activities.fragments.MessagesFragment;
+import Activities.fragments.ProfileFragment;
+import Activities.fragments.SearchFragment;
 
 public class BuyerDashboardActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
+    private HomeFragment home;
     private TabLayout tabLayout;
     private List<Fragment> fragmentList;
     private FrameLayout frameLayout;
@@ -33,6 +37,12 @@ public class BuyerDashboardActivity extends AppCompatActivity {
 
         frameLayout = findViewById(R.id.framlayout);
         tabLayout = findViewById(R.id.tablayout);
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new HomeFragment());
+        fragmentList.add(new MessagesFragment());
+        fragmentList.add(new SearchFragment());
+        fragmentList.add(new ProfileFragment());
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

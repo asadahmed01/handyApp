@@ -57,8 +57,7 @@
             android:layout_marginTop="-5dp"
             android:layout_toRightOf="@id/imageview"
             android:text="__"
-            android:textColor="@color/black"
-            />
+            android:textColor="@color/black" />
 
 
 

@@ -83,6 +83,7 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        FirebaseApp.initializeApp(this);
         GoogleSignin = findViewById(R.id.btn_google_signin);
 
         loading = findViewById(R.id.loading);

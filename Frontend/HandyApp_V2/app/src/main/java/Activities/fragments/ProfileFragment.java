@@ -44,6 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Activities.BuyerDashboardActivity;
+import Activities.SellerDashboardActivity;
 import Activities.SignUpActivity;
 
 
@@ -226,6 +227,51 @@ public class ProfileFragment extends Fragment {
 
                     AlertDialog alert = builder.create();
                     alert.show();
+                }else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    builder.setTitle("Confirm");
+                    builder.setMessage("Are you sure want to switch to Seller?");
+
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Do nothing but close the dialog
+                            FirebaseFirestore firestore;
+                            firestore = FirebaseFirestore.getInstance();
+                            HashMap<String,Object> map = new HashMap<>();
+
+                            map.put("usertype","Seller");
+
+                            firestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        Intent intent = new Intent(getActivity(), SellerDashboardActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+
                 }
             }
         });

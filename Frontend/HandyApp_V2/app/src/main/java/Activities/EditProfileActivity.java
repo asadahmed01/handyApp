@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -34,6 +36,8 @@ public class EditProfileActivity extends AppCompatActivity {
         address = findViewById(R.id.address);
         password = findViewById(R.id.password);
         update = findViewById(R.id.update);
+
+        getOldPassword();
 
     }
 
@@ -83,6 +87,54 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+    }
+
+    private void getOldPassword() {
+        FirebaseAuth firebaseAuth;
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore firebaseFirestore;
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        String firebaseUser = firebaseAuth.getCurrentUser().getUid();
+
+
+        firebaseFirestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot dataSnapshot = task.getResult();
+                            if (dataSnapshot.exists()) {
+                                oldpass = dataSnapshot.get("Password").toString();
+                                String userAddress = dataSnapshot.get("Address").toString();
+
+                                address.setText(userAddress);
+                                update.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Password = password.getText().toString();
+                                        Address = address.getText().toString();
+                                        if (Password.length() <= 5) {
+                                            Toast.makeText(EditProfileActivity.this, "password should be minimum 6 characters long", Toast.LENGTH_SHORT).show();
+                                        } else if (Password.equals("")) {
+                                            Toast.makeText(EditProfileActivity.this, "Write password", Toast.LENGTH_SHORT).show();
+                                        } else if (Address.equals("")) {
+                                            Toast.makeText(EditProfileActivity.this, "Write Address", Toast.LENGTH_SHORT).show();
+                                        } else {
+
+                                            UpdatePassword(Password, Address, oldpass);
+                                        }
+                                    }
+                                });
+
+//                                Toast.makeText(getActivity(), "getprofile data", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(EditProfileActivity.this, "Error While getting data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
 
     }
 }

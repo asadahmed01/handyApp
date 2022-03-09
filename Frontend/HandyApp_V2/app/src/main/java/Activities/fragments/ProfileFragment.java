@@ -53,6 +53,7 @@ import java.util.List;
 import java.util.Map;
 
 import Activities.BuyerDashboardActivity;
+import Activities.EditProfileActivity;
 import Activities.SellerDashboardActivity;
 import Activities.SignUpActivity;
 
@@ -106,6 +107,8 @@ public class ProfileFragment extends Fragment {
         editprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent  = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
 
             }
         });

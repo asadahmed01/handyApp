@@ -1,5 +1,7 @@
 package Activities.fragments;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.handyapp_v2.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -126,10 +129,10 @@ public class ProfileFragment extends Fragment {
                         ).withListener(new MultiplePermissionsListener() {
                     @Override
                     public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        //select image
+                        selectImage();
 
                         if (report.areAllPermissionsGranted()) {
-                            //select image
+                            selectImage();
                         }
                     }
 
@@ -327,9 +330,7 @@ public class ProfileFragment extends Fragment {
                     }
                 }
             });
-        } else {
-
-        }
+        } 
 
     }
 
@@ -380,5 +381,27 @@ public class ProfileFragment extends Fragment {
                 .setFixAspectRatio(true)
                 .setAspectRatio(1, 1)
                 .start(getActivity());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                assert result != null;
+                resultUri = result.getUri();
+                Glide
+                        .with(getContext())
+                        .load(resultUri)
+                        .centerCrop()
+
+                        .into(profileImageView);
+                uploadimage();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

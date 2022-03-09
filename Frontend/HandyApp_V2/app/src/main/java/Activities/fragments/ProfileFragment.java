@@ -23,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +34,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -39,9 +42,12 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Activities.BuyerDashboardActivity;
 import Activities.SellerDashboardActivity;
@@ -275,5 +281,104 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void uploadimage() {
+        if (resultUri != null) {
+            loading.setVisibility(View.VISIBLE);
+
+
+            final StorageReference ref = storage.child("profiles/" + firebaseAuth.getCurrentUser().getUid());
+            UploadTask uploadTask = ref.putFile(resultUri);
+
+
+            uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                @Override
+                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                    if (!task.isSuccessful()) {
+                        String error = task.getException().getMessage();
+                        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+
+                        throw task.getException();
+                    }
+
+                    // Continue with the task to get the download URL
+                    return ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            url = uri.toString();
+                        }
+                    });
+                }
+            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                @Override
+                public void onComplete(@NonNull Task<Uri> task) {
+                    if (task.isSuccessful()) {
+
+
+                        uploadImage();
+                    } else {
+                        String error = task.getException().getMessage();
+                        Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+                        loading.setVisibility(View.GONE);
+
+
+                    }
+                }
+            });
+        } else {
+
+        }
+
+    }
+
+    private void uploadImage() {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("imageURL", url);
+
+        String currentUserrID = firebaseAuth.getCurrentUser().getUid();
+
+        HashMap<String, Object> profileMap = new HashMap<>();
+        profileMap.put("imageURL", url);
+
+
+
+        Refdatabase.child("Users").child(currentUserrID).updateChildren(profileMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    loading.setVisibility(View.GONE);
+                    Toast.makeText(getActivity(), "Your profile has been updated...", Toast.LENGTH_SHORT).show();
+                } else {
+                    String errormessage = task.getException().toString();
+
+                }
+            }
+        });
+
+
+        firestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).update(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getActivity(), "Your profile has been updated...", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
+    }
+
+    private void selectImage() {
+        CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setActivityMenuIconColor(getResources().getColor(R.color.purple_200))
+                .setActivityTitle("Profile Photo")
+                .setFixAspectRatio(true)
+                .setAspectRatio(1, 1)
+                .start(getActivity());
     }
 }

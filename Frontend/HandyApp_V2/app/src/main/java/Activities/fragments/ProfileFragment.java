@@ -1,7 +1,9 @@
 package Activities.fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -38,8 +40,10 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
+import Activities.BuyerDashboardActivity;
 import Activities.SignUpActivity;
 
 
@@ -160,7 +164,7 @@ public class ProfileFragment extends Fragment {
                                 }else {
                                     changeUser.setText("Switch to Seller");
                                 }
-                                //get user type
+                                changeUserType(userType);
 
                                 address.setText(userAddress);
                                 usertype.setText(userType);
@@ -174,5 +178,56 @@ public class ProfileFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void changeUserType(String userType) {
+        changeUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (userType.equals("Seller")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                    builder.setTitle("Confirm");
+                    builder.setMessage("Are you sure want to switch to Buyer");
+
+                    builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            FirebaseFirestore firestore;
+                            firestore = FirebaseFirestore.getInstance();
+                            HashMap<String, Object> map = new HashMap<>();
+
+                            map.put("usertype", "Buyer");
+
+                            firestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        Intent intent = new Intent(getActivity(), BuyerDashboardActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
+
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            // Do nothing
+                            dialog.dismiss();
+                        }
+                    });
+
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            }
+        });
     }
 }

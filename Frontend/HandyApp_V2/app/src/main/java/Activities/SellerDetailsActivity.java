@@ -18,15 +18,14 @@ import java.util.ArrayList;
 
 public class SellerDetailsActivity extends AppCompatActivity {
 
-    TextView name, skills, price, description, category, address,rate;
+    TextView name, skills, price, description, category, address, rate;
     FloatingActionButton floatingActionButton;
     private String proID = "";
     String sname;
     String suid;
-    Button giveReview,makePayment;
+    Button giveReview, makePayment;
     RelativeLayout loading;
     RecyclerView recyclerView;
-
 
 
     FirebaseFirestore firestore;
@@ -57,10 +56,15 @@ public class SellerDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SellerDetailsActivity.this, MessagesActivity.class);
-                intent.putExtra("userid",suid);
+                intent.putExtra("userid", suid);
                 startActivity(intent);
             }
         });
-        
+
+    }
+
+    private void getdetails(String proID) {
+        FirebaseFirestore proRef = FirebaseFirestore.getInstance();
+
     }
 }

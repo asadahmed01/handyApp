@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HandyApp_V2">
         <activity
+            android:name="Activities.SellerDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name="Activities.ListActivity"
             android:exported="false" />
         <activity

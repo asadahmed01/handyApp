@@ -1,7 +1,9 @@
 package Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -17,12 +19,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
 import Activities.models.Review;
+import Adapters.ReviewAdapter;
 
 public class SellerDetailsActivity extends AppCompatActivity {
 
@@ -34,7 +41,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
     Button giveReview, makePayment;
     RelativeLayout loading;
     RecyclerView recyclerView;
-
+    ReviewAdapter myAdapter ;
     Review review;
     ArrayList<Review> list= new ArrayList<Review>();;
 
@@ -61,6 +68,19 @@ public class SellerDetailsActivity extends AppCompatActivity {
         rate = findViewById(R.id.rate);
         firestore = FirebaseFirestore.getInstance();
         floatingActionButton = findViewById(R.id.floatingActionButton);
+        review = new Review();
+
+        giveReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SellerDetailsActivity.this, WriteReviewActivity.class);
+                intent.putExtra("proid",proID);
+                startActivity(intent);
+
+            }
+        });
+        getdetails(proID);
+
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +90,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
     }
 
@@ -128,5 +149,38 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
 
 
+    }
+
+
+
+    private void getReviews() {
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        list = new ArrayList<Review>();
+        myAdapter = new ReviewAdapter(this, list);
+
+        recyclerView.setAdapter(myAdapter);
+
+        EventChildListner();
+
+    }
+
+    private void EventChildListner() {
+        firestore.collection("data").document(proID).collection("Reviews")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error!=null){
+
+                        }
+                        for (DocumentChange dc :value.getDocumentChanges()){
+                            if (dc.getType() == DocumentChange.Type.ADDED){
+                                list.add(dc.getDocument().toObject(Review.class));
+
+                            }
+                            myAdapter.notifyDataSetChanged();
+                        }
+                    }
+                });
     }
 }

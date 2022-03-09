@@ -82,12 +82,43 @@ public class SellerDetailsActivity extends AppCompatActivity {
                     FirebaseUser firebaseUser;
                     firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                     String id = firebaseUser.getUid();
-//                          sname = dataSnapshot.get("sellerName").toString();
+
                     final String sskills = dataSnapshot.get("skills").toString();
                     sprice = dataSnapshot.get("price").toString();
                     final String pcategory = dataSnapshot.get("category").toString();
                     final String sdescription = dataSnapshot.get("description").toString();
                     final String uid = dataSnapshot.get("uid").toString();
+
+                    if (!id.equals(uid)){
+                        floatingActionButton.setVisibility(View.VISIBLE);
+                        giveReview.setVisibility(View.VISIBLE);
+
+                    }
+                    else {
+                        floatingActionButton.setVisibility(View.GONE);
+                        giveReview.setVisibility(View.GONE);
+
+
+                    }
+                    try {
+
+                        final String rate = dataSnapshot.get("rate").toString();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        final String rate ="0";
+
+
+                    }
+
+                    suid = dataSnapshot.get("uid").toString();
+                    rate.setText(rate.getText().toString());
+                    skills.setText("Skills: "+sskills);
+                    price.setText("Price: "+sprice+"$/hr");
+                    category.setText(pcategory);
+                    description.setText("Description: "+sdescription);
+
+                    //payment
+                }
             }
         });
 

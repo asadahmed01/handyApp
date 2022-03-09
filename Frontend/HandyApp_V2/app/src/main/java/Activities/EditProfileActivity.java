@@ -15,6 +15,9 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -50,7 +53,7 @@ public class EditProfileActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(EditProfileActivity.this, "Something went wrong. Please try again later", Toast.LENGTH_SHORT).show();
                             } else {
-                                //get address here
+                                UpdateAddress();
                                 Toast.makeText(EditProfileActivity.this, "Password Successfully Modified", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -60,5 +63,26 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void UpdateAddress() {
+        FirebaseFirestore firestore;
+        firestore = FirebaseFirestore.getInstance();
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("Address", address.getText().toString());
+        map.put("Password", password.getText().toString());
+
+        firestore.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .update(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(EditProfileActivity.this, "Address updated", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+        });
+
     }
 }

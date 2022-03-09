@@ -48,8 +48,41 @@ public class WriteReviewActivity extends AppCompatActivity {
         rateValue = ratingBar.getRating();
         rateCount.setText(""+rateValue);
 
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rateValue = ratingBar.getRating();
+                rateCount.setText(""+rateValue);
+            }
+        });
 
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String review = Review.getText().toString();
+                String count = rateCount.getText().toString();
+                UoloadView(proID,review,count,uid);
+            }
+        });
     }
 
-    
+    private void UoloadView(String proID, String review, String count, String uid) {
+        Map<String,Object> map = new HashMap();
+        map.put("review",review);
+        map.put("keyid",proID);
+        map.put("rate",count);
+        map.put("uid",uid);
+
+        firebaseFirestore.collection("data").document(proID).collection("Reviews")
+                .document(uid).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(WriteReviewActivity.this, "Review Uploaded", Toast.LENGTH_SHORT).show();
+                finish();
+//                Intent intent  = new Intent(WriteReviewActivity.this,SellerDashboardActivity.class);
+//                startActivity(intent);
+            }
+        });
+
+    }
 }

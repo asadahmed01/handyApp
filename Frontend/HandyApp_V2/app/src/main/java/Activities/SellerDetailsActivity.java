@@ -22,6 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+import Activities.models.Review;
+
 public class SellerDetailsActivity extends AppCompatActivity {
 
     TextView name, skills, price, description, category, address, rate;
@@ -33,6 +35,8 @@ public class SellerDetailsActivity extends AppCompatActivity {
     RelativeLayout loading;
     RecyclerView recyclerView;
 
+    Review review;
+    ArrayList<Review> list= new ArrayList<Review>();;
 
     FirebaseFirestore firestore;
     String sprice;

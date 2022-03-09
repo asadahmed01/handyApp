@@ -1,5 +1,6 @@
 package Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,7 +12,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -65,6 +71,27 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
     private void getdetails(String proID) {
         FirebaseFirestore proRef = FirebaseFirestore.getInstance();
+
+        proRef.collection("data").document(proID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                DocumentSnapshot dataSnapshot = task.getResult();
+                if (dataSnapshot.exists()) {
+                    FirebaseUser firebaseUser;
+                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    String id = firebaseUser.getUid();
+//                          sname = dataSnapshot.get("sellerName").toString();
+                    final String sskills = dataSnapshot.get("skills").toString();
+                    sprice = dataSnapshot.get("price").toString();
+                    final String pcategory = dataSnapshot.get("category").toString();
+                    final String sdescription = dataSnapshot.get("description").toString();
+                    final String uid = dataSnapshot.get("uid").toString();
+            }
+        });
+
+
 
     }
 }

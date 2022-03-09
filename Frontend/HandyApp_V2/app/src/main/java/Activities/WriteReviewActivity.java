@@ -79,8 +79,7 @@ public class WriteReviewActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 Toast.makeText(WriteReviewActivity.this, "Review Uploaded", Toast.LENGTH_SHORT).show();
                 finish();
-//                Intent intent  = new Intent(WriteReviewActivity.this,SellerDashboardActivity.class);
-//                startActivity(intent);
+
             }
         });
 

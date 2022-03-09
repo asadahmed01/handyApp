@@ -18,11 +18,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -32,6 +36,7 @@ import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.makeramen.roundedimageview.RoundedImageView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -52,7 +57,6 @@ public class ProfileFragment extends Fragment {
     private StorageReference storage;
     RelativeLayout loading;
     Button logout;
-
     SharedPreferences sharedpreferences;
 
     @Override
@@ -123,5 +127,52 @@ public class ProfileFragment extends Fragment {
                 }).check();
             }
         });
+        getProfileData();
+    }
+
+    private void getProfileData() {
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore firebaseFirestore;
+        firebaseFirestore = FirebaseFirestore.getInstance();
+        String firebaseUser = firebaseAuth.getCurrentUser().getUid();
+
+
+        firebaseFirestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot dataSnapshot = task.getResult();
+                            if (dataSnapshot.exists()) {
+                                String username = dataSnapshot.get("username").toString();
+                                String myemail = dataSnapshot.get("email").toString();
+                                String userType = dataSnapshot.get("usertype").toString();
+                                String userAddress = dataSnapshot.get("Address").toString();
+                                try {
+                                    String imageurl = dataSnapshot.get("imageURL").toString();
+                                    Picasso.get().load(imageurl).into(profileImageView);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(getActivity(), "" + e, Toast.LENGTH_SHORT).show();
+                                }
+                                if (userType.equals("Seller")){
+                                    changeUser.setText("Switch to Buyer");
+                                }else {
+                                    changeUser.setText("Switch to Seller");
+                                }
+                                //get user type
+
+                                address.setText(userAddress);
+                                usertype.setText(userType);
+                                nametxt.setText(username);
+                                name.setText(username);
+                                email.setText(myemail);
+
+                            } else {
+                                Toast.makeText(getActivity(), "Error While getting data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }
+                });
     }
 }

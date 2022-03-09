@@ -1,6 +1,6 @@
 package Activities.fragments;
 
-import android.app.ListActivity;
+import Activities.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment {
         web = view.findViewById(R.id.web);
         video = view.findViewById(R.id.video);
 
+
         clickListner();
 
 
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "plumbing");
+                intent.putExtra("category", "Plumbing");
                 startActivity(intent);
             }
         });
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "cleaning");
+                intent.putExtra("category", "Cleaning");
                 startActivity(intent);
             }
         });
@@ -78,7 +79,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "photography");
+                intent.putExtra("category", "Photography");
                 startActivity(intent);
             }
         });
@@ -86,7 +87,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "carrepair");
+                intent.putExtra("category", "Car Repair");
                 startActivity(intent);
             }
         });
@@ -94,7 +95,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "painting");
+                intent.putExtra("category", "Painting");
                 startActivity(intent);
             }
         });
@@ -102,7 +103,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "housework");
+                intent.putExtra("category", "House Work");
                 startActivity(intent);
             }
         });
@@ -110,7 +111,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "webdevelopment");
+                intent.putExtra("category", "Web Development");
                 startActivity(intent);
             }
         });
@@ -118,7 +119,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ListActivity.class);
-                intent.putExtra("category", "photonvideo");
+                intent.putExtra("category", "Photo & Video");
                 startActivity(intent);
             }
         });

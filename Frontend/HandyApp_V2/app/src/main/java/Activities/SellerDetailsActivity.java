@@ -43,7 +43,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ReviewAdapter myAdapter ;
     Review review;
-    ArrayList<Review> list= new ArrayList<Review>();;
+    ArrayList<Review> list= new ArrayList<Review>();
 
     FirebaseFirestore firestore;
     String sprice;
@@ -51,9 +51,10 @@ public class SellerDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        proID = getIntent().getStringExtra("pid");
         setContentView(R.layout.activity_seller_details);
 
-        proID = getIntent().getStringExtra("pid");
+
         name = findViewById(R.id.seller_name);
         skills = findViewById(R.id.seller_skills);
         price = findViewById(R.id.sellerprice);
@@ -81,6 +82,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
         });
         getdetails(proID);
 
+        getReviews();
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +136,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
 
                     }
-
+                    loading.setVisibility(View.GONE);
                     suid = dataSnapshot.get("uid").toString();
                     rate.setText(rate.getText().toString());
                     skills.setText("Skills: "+sskills);

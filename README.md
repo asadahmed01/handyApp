@@ -64,6 +64,11 @@ At the end of the transaction, the buyer will pay the seller through the app and
 
 ### External libraries
 
+* [Firebase Authentication](https://firebase.google.com/docs/auth)
+* [Firebase Realtime Database](https://firebase.google.com/docs/database)
+* [Firebase Firestore](https://firebase.google.com/docs/firestore)
+
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 

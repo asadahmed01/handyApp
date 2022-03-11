@@ -17,6 +17,7 @@
       <a href="#about-the-project">About The Project</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
+        <li><a href="#external-libraries">External libraries</a></li>
       </ul>
     </li>
     <li>
@@ -57,10 +58,11 @@ At the end of the transaction, the buyer will pay the seller through the app and
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 * [Node.js](https://nodejs.org/en/)
 * [java](https://docs.oracle.com/javase/7/docs/technotes/guides/language/)
+
+### External libraries
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

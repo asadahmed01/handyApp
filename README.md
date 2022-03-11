@@ -85,8 +85,16 @@ Download Android Studio latest version
 
 ### Installation
 
--Install Google play Services Install Google play emulator Install Latest JDK Install Latest SDK Here is a [Link](https://developer.android.com/studio/intro/studio-config) on how to install and configure your IDE.
--Hello boys
+
+* Install Google play Services
+* Install Google play emulator
+* Install Latest JDK
+* Install Latest SDK
+Here is a [Link](https://developer.android.com/studio/intro/studio-config) on how to install and configure your IDE.
+
+
+
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 

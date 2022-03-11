@@ -87,10 +87,10 @@ Here is a [Link](https://developer.android.com/studio/intro/studio-config) on ho
 <!-- CONTACT -->
 ## Contact
 
-Mohamed Halbouni - mo.halbouni@gmail.com
-Asad Ahmed
-Mohammed Abusultan
-Zandrin Nathaniel
+- Mohamed Halbouni - mo.halbouni@gmail.com
+- Asad Ahmed
+- Mohammed Abusultan
+- Zandrin Nathaniel
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 <p align="right">(<a href="#top">back to top</a>)</p>

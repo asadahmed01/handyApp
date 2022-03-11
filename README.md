@@ -1,14 +1,5 @@
 <div id="top"></div>
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-
 <!-- TABLE OF CONTENTS -->
 <details>
   <summary>Table of Contents</summary>
@@ -50,7 +41,6 @@ Buyers can choose the people they want to hire based on their price and reviews 
 
 Once they choose a seller, they can contact them by private message and arrange when or where to meet.
 At the end of the transaction, the buyer will pay the seller through the app and can leave a review and a 5-stare-based rating on how they did.
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -66,8 +56,6 @@ At the end of the transaction, the buyer will pay the seller through the app and
 * [Firebase Authentication](https://firebase.google.com/docs/auth)
 * [Firebase Realtime Database](https://firebase.google.com/docs/database)
 * [Firebase Firestore](https://firebase.google.com/docs/firestore)
-
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
@@ -90,22 +78,8 @@ Download Android Studio latest version
 * Install Latest JDK
 * Install Latest SDK
 Here is a [Link](https://developer.android.com/studio/intro/studio-config) on how to install and configure your IDE.
-
-
-
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#top">back to top</a>)</p>
 
 
 
@@ -119,6 +93,5 @@ Mohammed Abusultan
 Zandrin Nathaniel
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
 <p align="right">(<a href="#top">back to top</a>)</p>
 

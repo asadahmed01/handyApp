@@ -92,6 +92,6 @@ Here is a [Link](https://developer.android.com/studio/intro/studio-config) on ho
 - Mohammed Abusultan
 - Zandrin Nathaniel
 
-Project Link: Handy App(https://github.com/asadahmed01/handyapp/)
+Project Link: [Handy App](https://github.com/asadahmed01/handyapp/)
 <p align="right">(<a href="#top">back to top</a>)</p>
 

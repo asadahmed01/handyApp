@@ -42,16 +42,14 @@
 
 Handy App
 
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+This project aims to connect the tradespeople to the people that need their services and skills. 
+In the app, sellers that are selling their services and skills signup and upload information about their services, images, and any other relevant information.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
+When a buyer or someone wants services, they sign up and browse the categories and once they click on a specific category, they will see all the sellers in that category. 
+Buyers can choose the people they want to hire based on their price and reviews about the services they offer.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
+Once they choose a seller, they can contact them by private message and arrange when or where to meet.
+At the end of the transaction, the buyer will pay the seller through the app and can leave a review and a 5-stare-based rating on how they did.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 

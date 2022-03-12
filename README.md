@@ -84,8 +84,8 @@ Here is a [Link](https://developer.android.com/studio/intro/studio-config) on ho
 ## Contact
 
 - Mohamed Halbouni - mo.halbouni@gmail.com
-- Asad Ahmed
-- Mohammed Abusultan
+- Asad Ahmed - aahmed8671@conestogac.on.ca
+- Mohammed Abusultan - mabusultan5425@conestogac.on.ca
 - Zandrin Nathaniel
 
 Project Link: [Handy App](https://github.com/asadahmed01/handyapp/)

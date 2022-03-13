@@ -23,5 +23,8 @@ public class AddPayment extends AppCompatActivity {
         actionBar.setTitle("Payment");
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
+
+        cardMultilineWidget = findViewById(R.id.card_input_widget);
+        save = findViewById(R.id.save_payment);
     }
 }

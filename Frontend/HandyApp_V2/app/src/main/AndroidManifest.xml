@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HandyApp_V2">
         <activity
-            android:name="Activities.AddPayment"
+
             android:exported="false" />
         <activity
             android:name="Activities.ListActivity"

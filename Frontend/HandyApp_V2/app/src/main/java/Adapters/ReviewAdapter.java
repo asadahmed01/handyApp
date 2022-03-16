@@ -1,6 +1,5 @@
 package Adapters;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -50,7 +49,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     public ReviewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.seller_review_list, parent, false);
 
-
         return new ReviewAdapter.MyViewHolder(v);
     }
 
@@ -72,8 +70,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             tsum = 0;
 
             tsum = tsum+reviewsum;
-
-//            sum = tsum/count;
         }
 
 
@@ -167,7 +163,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             review = itemView.findViewById(R.id.review_text);
             profile = itemView.findViewById(R.id.image1);
             ratingBar = itemView.findViewById(R.id.ratingbar);
-
             profileref = FirebaseFirestore.getInstance();
 
 

@@ -172,7 +172,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (UserType.equals("")){
+                if (!UserType.equals("")){
                     Toast.makeText(SignUpActivity.this, "kindly select usertype", Toast.LENGTH_SHORT).show();
                 }
                 else {

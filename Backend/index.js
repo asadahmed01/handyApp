@@ -6,6 +6,7 @@ const sellerRoutes = require("./app/routes/seller.routes.js");
 const reviewsRoutes = require("./app/routes/reviews.routes.js");
 const addressRoutes = require("./app/routes/address.routes.js");
 const categoriesRoutes = require("./app/routes/categories.routes.js");
+const users = require("./app/routes/registerUser.js");
 const app = express();
 //*********************//
 app.use(cors());
@@ -28,6 +29,7 @@ app.use("/sellers", sellerRoutes);
 app.use("/reviews", reviewsRoutes);
 app.use("/address", addressRoutes);
 app.use("/categories", categoriesRoutes);
+app.use("/users", users);
 // Handling Errors
 app.use((err, req, res, next) => {
   // console.log(err);

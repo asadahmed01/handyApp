@@ -112,7 +112,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
 
         HashMap<String,Object> map = new HashMap<>();
         map.put("rate",""+tsum);
-
         firestoreaddreview.collection("data").document(review.getKeyid()).update(map);
 
 

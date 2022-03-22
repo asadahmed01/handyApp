@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,7 +37,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public UserAdapter(Context context, List<Model> mUsers) {
         this.context = context;
         this.mUsers = mUsers;
-        //this.ischat = ischat;
+
     }
 
     @NonNull
@@ -69,9 +68,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
         }
 
-//        if (ischat){
+
         lastMessage(user.getId(), holder.last_msg);
-//        }
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

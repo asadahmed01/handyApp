@@ -54,7 +54,7 @@ public class ReviewDataAdapter extends RecyclerView.Adapter<ReviewDataAdapter.Vi
             profile = itemView.findViewById(R.id.image1);
             reviewname = itemView.findViewById(R.id.review_name);
             review_text = itemView.findViewById(R.id.review_text);
-            divider = itemView.findViewById(R.id.divider);
+
         }
 
         public void setDate(int resource, String review_name, String review_txt, String dvder) {

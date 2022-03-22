@@ -43,16 +43,6 @@
             android:name="Activities.SellerDashboardActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.AllCategoriesActivity"
-            android:exported="false" />
-        <activity
-            android:name="Activities.ProfileActivity"
-            android:exported="false"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
         <activity

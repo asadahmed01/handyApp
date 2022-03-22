@@ -117,14 +117,14 @@
         android:id="@+id/checkout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/payment"
         android:layout_marginHorizontal="56dp"
         android:background="@drawable/rectangle_btn"
+        android:clickable="true"
         android:fontFamily="@font/roboto_bold"
         android:paddingVertical="15dp"
-        android:clickable="true"
         android:text="Pay now"
         android:textAllCaps="true"
-        android:layout_below="@+id/payment"
         android:textColor="@color/white"
         android:textSize="16sp" />
 

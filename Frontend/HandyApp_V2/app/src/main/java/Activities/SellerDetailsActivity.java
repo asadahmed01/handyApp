@@ -1,11 +1,5 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,23 +7,29 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.handyapp_v2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import Activities.models.ListModel;
 import Activities.models.Review;
 import Adapters.ReviewAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SellerDetailsActivity extends AppCompatActivity {
 
@@ -44,14 +44,18 @@ public class SellerDetailsActivity extends AppCompatActivity {
     ReviewAdapter myAdapter ;
     Review review;
     ArrayList<Review> list= new ArrayList<Review>();
+    ApiInterface apiInterface;
 
     FirebaseFirestore firestore;
     String sprice;
+    private int id ;
+    String Price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         proID = getIntent().getStringExtra("pid");
+        id = Integer.parseInt(proID);
         setContentView(R.layout.activity_seller_details);
 
 
@@ -68,8 +72,9 @@ public class SellerDetailsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.sellerRecyclerList);
         rate = findViewById(R.id.rate);
         firestore = FirebaseFirestore.getInstance();
-        floatingActionButton = findViewById(R.id.floatingActionButton);
         review = new Review();
+
+        floatingActionButton = findViewById(R.id.floatingActionButton);
 
         giveReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,82 +85,95 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
             }
         });
-        getdetails(proID);
 
+        getdetailswithApis(id);
         getReviews();
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SellerDetailsActivity.this, MessagesActivity.class);
-                intent.putExtra("userid", suid);
-                startActivity(intent);
-            }
-        });
 
 
     }
 
-    private void getdetails(String proID) {
-        FirebaseFirestore proRef = FirebaseFirestore.getInstance();
+    private void getdetailswithApis(int iid) {
+        apiInterface = ApiInterface.retrofit.create(ApiInterface.class);
 
-        proRef.collection("data").document(proID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        Call<List<ListModel>> call = apiInterface.getdetails(iid);
+        call.enqueue(new Callback<List<ListModel>>() {
+            @Override
+            public void onResponse(Call<List<ListModel>> call, Response<List<ListModel>> response) {
+                if (response.isSuccessful()){
+                    for (ListModel listModel: response.body()){
+                        skills.append("Skills: "+listModel.getSkills());
+                        category.append(""+listModel.getCategory());
+
+                        description.append("Description: "+listModel.getDescription());
+                        price.append(listModel.getPrice());
+                        Price = listModel.getPrice();
+                        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(SellerDetailsActivity.this, MessagesActivity.class);
+                                intent.putExtra("userid", listModel.getUid());
+                                startActivity(intent);
+                            }
+                        });
+
+
+
+                        getuserdata(listModel.getUid());
+                    }
+
+                }
+            }
 
             @Override
+            public void onFailure(Call<List<ListModel>> call, Throwable t) {
+
+            }
+        });
+
+    }
+
+    private void getuserdata(String uid) {
+        FirebaseFirestore userref = FirebaseFirestore.getInstance();
+
+        userref.collection("users").document(uid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot dataSnapshot = task.getResult();
+                    if (dataSnapshot.exists()) {
+                        sname = dataSnapshot.get("username").toString();
+                        String receiveremail = dataSnapshot.get("email").toString();
+                        makePayment.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(SellerDetailsActivity.this, PaymentActivity.class);
+                                intent.putExtra("email", receiveremail);
+                                intent.putExtra("name", sname);
+                                intent.putExtra("price", Price);
+                                startActivity(intent);
+                            }
+                        });
 
-                DocumentSnapshot dataSnapshot = task.getResult();
-                if (dataSnapshot.exists()) {
-                    FirebaseUser firebaseUser;
-                    firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                    String id = firebaseUser.getUid();
-
-                    final String sskills = dataSnapshot.get("skills").toString();
-                    sprice = dataSnapshot.get("price").toString();
-                    final String pcategory = dataSnapshot.get("category").toString();
-                    final String sdescription = dataSnapshot.get("description").toString();
-                    final String uid = dataSnapshot.get("uid").toString();
-
-                    if (!id.equals(uid)){
-                        floatingActionButton.setVisibility(View.VISIBLE);
-                        giveReview.setVisibility(View.VISIBLE);
-
-                    }
-                    else {
-                        floatingActionButton.setVisibility(View.GONE);
-                        giveReview.setVisibility(View.GONE);
-
+                        final String sAddress = dataSnapshot.get("Address").toString();
+                        loading.setVisibility(View.GONE);
+                        name.setText(sname);
+                        address.setText(sAddress);
 
                     }
-                    try {
 
-                        final String rate = dataSnapshot.get("rate").toString();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        final String rate ="0";
-
-
-                    }
-                    loading.setVisibility(View.GONE);
-                    suid = dataSnapshot.get("uid").toString();
-                    rate.setText(rate.getText().toString());
-                    skills.setText("Skills: "+sskills);
-                    price.setText("Price: "+sprice+"$/hr");
-                    category.setText(pcategory);
-                    description.setText("Description: "+sdescription);
-
-                    //payment
                 }
             }
         });
 
 
-
     }
 
 
 
+
+
     private void getReviews() {
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         list = new ArrayList<Review>();
@@ -163,26 +181,34 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(myAdapter);
 
-        EventChildListner();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://handymendapi.herokuapp.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-    }
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        Call<List<Review>> call = apiInterface.getReviews(proID);
 
-    private void EventChildListner() {
-        firestore.collection("data").document(proID).collection("Reviews")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error!=null){
-
-                        }
-                        for (DocumentChange dc :value.getDocumentChanges()){
-                            if (dc.getType() == DocumentChange.Type.ADDED){
-                                list.add(dc.getDocument().toObject(Review.class));
-
-                            }
-                            myAdapter.notifyDataSetChanged();
-                        }
+        call.enqueue(new Callback<List<Review>>() {
+            @Override
+            public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
+                if(response.isSuccessful()) {
+                    List<Review> posts = response.body();
+                    for(Review post: posts) {
+                        list.add((Review) post);
                     }
-                });
+                    myAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Review>> call, Throwable t) {
+
+            }
+        });
+
+
+
     }
+
 }

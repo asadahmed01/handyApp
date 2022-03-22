@@ -1,7 +1,6 @@
 package Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +20,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import Activities.SellerDetailsActivity;
-import Activities.models.ListModel;
 import Activities.models.Review;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
@@ -48,7 +44,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     @Override
     public ReviewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.seller_review_list, parent, false);
-
         return new ReviewAdapter.MyViewHolder(v);
     }
 
@@ -56,9 +51,12 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     public void onBindViewHolder(@NonNull ReviewAdapter.MyViewHolder holder, int position) {
 
         Review review = list.get(position);
-//        holder.name.setText(listModel.getUid());
         holder.name.setText(review.getUid());
         holder.review.setText(review.getReview());
+
+        String rate = review.getRate();
+        int ratenum = (int)Double.parseDouble(review.getRate());
+        holder.ratingBar.setRating(ratenum);
 
         final String keyid = review.getKeyid();
         final String uid = review.getUid();
@@ -87,7 +85,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
                             DocumentSnapshot dataSnapshot = task.getResult();
                             if (dataSnapshot.exists()) {
                                 String username = dataSnapshot.get("username").toString();
-//                                String review = dataSnapshot.get("review").toString();
+
                                 try {
                                     String imageurl = dataSnapshot.get("imageURL").toString();
                                     Picasso.get().load(imageurl).into(holder.profile);
@@ -96,43 +94,22 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
                                     e.printStackTrace();
                                     Toast.makeText(context, "" + e, Toast.LENGTH_SHORT).show();
                                 }
-//                                nametxt.setText(username);
-//                                holder.name.setText(""+tsum);
+
                                 holder.name.setText(username);
-//                                holder.review.setText(review);
-//                                email.setText(myemail);
-//                                Toast.makeText(getActivity(), "getprofile data", Toast.LENGTH_SHORT).show();
+
                             } else {
-//                                Toast.makeText(getActivity(), "Error While getting data", Toast.LENGTH_SHORT).show();
+
                             }
                         }
                     }
                 });
 
 
-        HashMap<String,Object> map = new HashMap<>();
-        map.put("rate",""+tsum);
-        firestoreaddreview.collection("data").document(review.getKeyid()).update(map);
 
-
-
-
-/*
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, SellerDetailsActivity.class);
-                intent.putExtra("pid", listModel.getKay());
-                context.startActivity(intent);
-            }
-        });*/
 
         try {
-//            Picasso.get().load(posts.getProfile()).into(holder.profile);
 
         } catch (Exception e) {
-//            Toast.makeText(context, "" + e, Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
 

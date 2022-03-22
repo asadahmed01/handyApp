@@ -1,24 +1,25 @@
 package Activities;
 
-import androidx.annotation.Nullable;
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-
 import com.example.handyapp_v2.R;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import Activities.models.ListModel;
 import Adapters.ListAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -42,7 +43,6 @@ public class ListActivity extends AppCompatActivity {
         category = intent.getStringExtra("category");
 
         listModel = new ListModel();
-//        RetreavePosts();
         RetreaveFirestore();
     }
     private void RetreaveFirestore() {
@@ -57,22 +57,31 @@ public class ListActivity extends AppCompatActivity {
     }
 
     private void EventChildListner() {
-        firestore.collection("data")
-                .whereEqualTo("category",category)
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if (error!=null){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://handymendapi.herokuapp.com")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-                        }
-                        for (DocumentChange dc :value.getDocumentChanges()){
-                            if (dc.getType() == DocumentChange.Type.ADDED){
-                                list.add(dc.getDocument().toObject(ListModel.class));
+        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
 
-                            }
-                            myAdapter.notifyDataSetChanged();
-                        }
+        Call<List<ListModel>> call = apiInterface.getCategory(category.toString());
+
+        call.enqueue(new Callback<List<ListModel>>() {
+            @Override
+            public void onResponse(Call<List<ListModel>> call, Response<List<ListModel>> response) {
+                if(response.isSuccessful()) {
+                    List<ListModel> posts = response.body();
+                    for(ListModel post: posts) {
+                        list.add((ListModel) post);
                     }
-                });
+                    myAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ListModel>> call, Throwable t) {
+
+            }
+        });
     }
 }

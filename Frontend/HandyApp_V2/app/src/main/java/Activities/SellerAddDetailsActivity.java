@@ -1,8 +1,5 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,9 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.handyapp_v2.R;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -21,6 +18,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.POST;
 
 public class SellerAddDetailsActivity extends AppCompatActivity {
 
@@ -31,6 +33,7 @@ public class SellerAddDetailsActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
     String currentDate,currentTime;
+    ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +79,23 @@ public class SellerAddDetailsActivity extends AppCompatActivity {
         map.put("date",currentDate);
         map.put("time",currentTime);
 
-        firebaseFirestore.collection("data").document(instantkey)
-                .set(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(SellerAddDetailsActivity.this, "Job has been posted", Toast.LENGTH_SHORT).show();
-                        Intent intent  = new Intent(SellerAddDetailsActivity.this,SellerDashboardActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+        apiInterface = ApiInterface.retrofit.create(ApiInterface.class);
+        Call<POST> call = apiInterface.newData(category, price.getText().toString(), skills.getText().toString(), description.getText().toString(), uid, instantkey, currentDate, currentTime);
 
-                    }
-                });
+        call.enqueue(new Callback<POST>() {
+            @Override
+            public void onResponse(Call<POST> call, Response<POST> response) {
+                Toast.makeText(SellerAddDetailsActivity.this, "Job has been done", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SellerAddDetailsActivity.this, SellerDashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onFailure(Call<POST> call, Throwable t) {
+                Toast.makeText(SellerAddDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 

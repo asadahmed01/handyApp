@@ -1,8 +1,5 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -21,10 +18,17 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.handyapp_v2.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -73,6 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseFirestore db;
     RelativeLayout loading;
     String UserType = "";
+
+    /////////////////////////////////////////////////////
     GoogleSignInClient googleSignInClient;
     FirebaseAuth mAuth;
     TextView GoogleSignin;
@@ -219,20 +225,6 @@ public class SignUpActivity extends AppCompatActivity {
 
 
 
-
-    public void ChangeCards(View v) {
-        switch (v.getId()) {
-            case R.id.sellerRegister:
-                changeCardsSelection(1);
-                break;
-
-            case R.id.buyerRegister:
-                changeCardsSelection(2);
-                break;
-        }
-
-    }
-
     private void saveDataOfUser(FirebaseUser user) {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Map<String,Object> users = new HashMap<>();
@@ -276,10 +268,56 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
+    private void register(String username, String email, String password) {
+        FirebaseUser firebaseUser = auth.getCurrentUser();
+        assert firebaseUser != null;
+        String userid = firebaseUser.getUid();
+
+        reference = FirebaseDatabase.getInstance().getReference("Users")
+                .child(userid);
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("id",userid);
+        hashMap.put("username",username);
+        hashMap.put("imageURL","default");
+
+        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    loading.setVisibility(View.GONE);
+                    Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
     private void googleSignIn() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
+                firebaseAuthWithGoogle(account.getIdToken());
+            } catch (ApiException e) {
+                Toast.makeText(SignUpActivity.this, "" + e, Toast.LENGTH_SHORT).show();
+
+                // Google Sign In failed, update UI appropriately
+                Log.w("TAG", "Google sign in failed", e);
+            }
+        }
+    }
+
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -333,6 +371,20 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
 
+
+    public void ChangeCards(View v) {
+        switch (v.getId()) {
+            case R.id.sellerRegister:
+                changeCardsSelection(1);
+                break;
+
+            case R.id.buyerRegister:
+                changeCardsSelection(2);
+                break;
+        }
+
+    }
+
     //1. means the user selected the buyer card.
     //2. means the user selected the seller card.
     public void changeCardsSelection(int flag)
@@ -361,47 +413,12 @@ public class SignUpActivity extends AppCompatActivity {
         }
     }
 
-    private void register(String userName, String userEmail, String userPassword)
-    {
-        auth.createUserWithEmailAndPassword(userEmail,userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful())
-                {
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
-                    assert firebaseUser != null;
-                    String userID = firebaseUser.getUid();
 
-                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-                    HashMap<String,String> hashMap = new HashMap<>();
-                    hashMap.put("id",userID);
-                    hashMap.put("username",userName);
-
-                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                Intent intent = new Intent(getApplicationContext(),AllCategoriesActivity.class);
-                                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK | intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }
-                    });
-                }
-            }
-        });
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Intent intent = new Intent(SignUpActivity.this, SellerDashboardActivity.class);
-            startActivity(intent);
-        }
+
     }
 
 

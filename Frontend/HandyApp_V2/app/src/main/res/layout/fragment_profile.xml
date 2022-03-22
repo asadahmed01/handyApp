@@ -7,6 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
 
         <ScrollView
@@ -17,7 +18,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
+                android:background="@drawable/bg"
+
                 android:clipToPadding="false"
                 android:orientation="vertical"
                 android:paddingBottom="20dp">
@@ -38,11 +40,7 @@
                         android:textColor="@color/txt_black_333333"
                         android:textSize="24sp" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_brightness" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -67,13 +65,12 @@
                             android:layout_height="80dp"
                             android:layout_gravity="center"
                             android:scaleType="fitXY"
-                            android:tint="@color/white"
                             android:src="@drawable/ic_profile"
+                            android:tint="@color/white"
                             app:riv_border_color="@color/white"
                             app:riv_border_width="1dp"
                             app:riv_corner_radius="10dp"
-                            app:riv_oval="true"
-                            />
+                            app:riv_oval="true" />
 
                         <ImageView
                             android:id="@+id/edit_image"
@@ -99,7 +96,6 @@
                             android:textSize="18sp" />
 
                         <TextView
-                            android:visibility="gone"
                             android:id="@+id/description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -107,7 +103,8 @@
                             android:fontFamily="@font/roboto_bold"
                             android:text="Description"
                             android:textColor="@color/white"
-                            android:textSize="18sp" />
+                            android:textSize="18sp"
+                            android:visibility="gone" />
 
                         <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
                             android:layout_width="match_parent"
@@ -160,19 +157,17 @@
                     android:paddingVertical="16dp">
 
 
+                    <ImageView
+                        android:id="@+id/edit_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:src="@drawable/ic_baseline_edit_24" />
 
-
-                        <ImageView
-                            android:id="@+id/edit_profile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:src="@drawable/ic_baseline_edit_24" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -293,11 +288,11 @@
                         android:background="@color/half_line_gray_80cccccc" />
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15.5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -340,11 +335,11 @@
                         android:background="@color/half_line_gray_80cccccc" />
 
                     <LinearLayout
-                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15.5dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -398,7 +393,7 @@
                             android:layout_gravity="end"
                             android:layout_marginStart="50dp"
                             android:text="change User Type"
-                            android:textColor="@color/purple_200"
+                            android:textColor="@color/black"
                             android:textSize="20dp"
                             android:textStyle="bold"
 
@@ -407,15 +402,17 @@
 
                 </LinearLayout>
 
-                <Button
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/logout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/rectangle_btn"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
                     android:layout_marginTop="10dp"
-                    android:text="LogOut"
-                    android:id="@+id/logout"
-                    />
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/white"
+                    android:text="LogOut" />
 
             </LinearLayout>
 

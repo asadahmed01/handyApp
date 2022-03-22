@@ -105,7 +105,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
                     for (ListModel listModel: response.body()){
                         skills.append("Skills: "+listModel.getSkills());
                         category.append(""+listModel.getCategory());
-//                        name.append(""+listModel.getUid());
+
                         description.append("Description: "+listModel.getDescription());
                         price.append(listModel.getPrice());
                         Price = listModel.getPrice();

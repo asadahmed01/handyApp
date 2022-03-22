@@ -1,12 +1,12 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.handyapp_v2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
                     firebaseFirestore = FirebaseFirestore.getInstance();
 
                     String firebaseUser = firebaseAuth.getCurrentUser().getUid();
-//        Toast.makeText(getActivity(), firebaseUser, Toast.LENGTH_SHORT).show();
+
 
                     firebaseFirestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -25,10 +25,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-//import CategoriesApiCalls.CategoriesResponse;
-//import LoginApiCalls.ApiClient;
-//import LoginApiCalls.LoginResponse;
-//import LoginApiCalls.UserLogin;
+
 
 public class LoginActivity extends AppCompatActivity {
 

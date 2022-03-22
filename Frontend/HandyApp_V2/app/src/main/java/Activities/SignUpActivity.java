@@ -77,6 +77,8 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseFirestore db;
     RelativeLayout loading;
     String UserType = "";
+
+    /////////////////////////////////////////////////////
     GoogleSignInClient googleSignInClient;
     FirebaseAuth mAuth;
     TextView GoogleSignin;
@@ -416,11 +418,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser != null) {
-            Intent intent = new Intent(SignUpActivity.this, SellerDashboardActivity.class);
-            startActivity(intent);
-        }
+
     }
 
 

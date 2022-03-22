@@ -1,10 +1,5 @@
 package Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -12,6 +7,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.handyapp_v2.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -121,9 +121,9 @@ public class SellerDashboardActivity extends AppCompatActivity {
                                 if (task.getResult().exists()) {
                                     if (!task.getResult().contains("username")) {
                                         Toast.makeText(SellerDashboardActivity.this, "Please Set your username", Toast.LENGTH_SHORT).show();
-                                        //Intent usernameintent = new Intent(SellerDashboardActivity.this, UsernameActivity.class);
-                                        //startActivity(usernameintent);
-                                        //finish();
+                                        Intent usernameintent = new Intent(SellerDashboardActivity.this, UsernameActivity.class);
+                                        startActivity(usernameintent);
+                                        finish();
                                     }
                                 }
                             } else

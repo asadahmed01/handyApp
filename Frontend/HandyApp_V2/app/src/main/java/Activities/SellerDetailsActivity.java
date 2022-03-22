@@ -88,9 +88,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
 
         getdetailswithApis(id);
         getReviews();
-
-
-
+        
 
     }
 

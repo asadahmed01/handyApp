@@ -7,10 +7,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.handyapp_v2.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
@@ -59,13 +63,38 @@ public class SellerAddDetailsActivity extends AppCompatActivity {
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                uploadDate();
+
+                firebaseAuth = FirebaseAuth.getInstance();
+                FirebaseFirestore firebaseFirestore;
+                firebaseFirestore = FirebaseFirestore.getInstance();
+
+                String firebaseUser = firebaseAuth.getCurrentUser().getUid();
+//        Toast.makeText(getActivity(), firebaseUser, Toast.LENGTH_SHORT).show();
+
+                firebaseFirestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot dataSnapshot = task.getResult();
+                                    if (dataSnapshot.exists()) {
+                                        String username = dataSnapshot.get("username").toString();
+
+                                        uploadDate(username);
+
+//                                Toast.makeText(getActivity(), "getprofile data", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        Toast.makeText(SellerAddDetailsActivity.this, "Error While getting data", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                        });
 
             }
         });
     }
 
-    private void uploadDate() {
+    private void uploadDate(String userName) {
         currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
         currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
         String instantkey = currentDate+" "+currentTime;
@@ -75,12 +104,10 @@ public class SellerAddDetailsActivity extends AppCompatActivity {
         map.put("skills",skills.getText().toString());
         map.put("description",description.getText().toString());
         map.put("uid",uid);
-        map.put("kay",instantkey);
-        map.put("date",currentDate);
-        map.put("time",currentTime);
+
 
         apiInterface = ApiInterface.retrofit.create(ApiInterface.class);
-        Call<POST> call = apiInterface.newData(category, price.getText().toString(), skills.getText().toString(), description.getText().toString(), uid, instantkey, currentDate, currentTime);
+        Call<POST> call = apiInterface.newData(category, price.getText().toString(), skills.getText().toString(),userName, description.getText().toString(), uid);
 
         call.enqueue(new Callback<POST>() {
             @Override
@@ -93,7 +120,8 @@ public class SellerAddDetailsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<POST> call, Throwable t) {
-                Toast.makeText(SellerAddDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SellerAddDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 

@@ -42,17 +42,18 @@ public interface ApiInterface {
             @Field("category") String category,
             @Field("price") String price,
             @Field("skills") String skills,
+            @Field("username") String username,
             @Field("description") String description,
-            @Field("uid") String uid,
-            @Field("kay") String kay,
-            @Field("date") String date,
-            @Field("time") String time
+            @Field("uid") String uid
+
     );
 
 
     @GET("/users/categories/{categoryname}")
     Call<List<ListModel>> getCategory(@Path("categoryname") String category);
 
+    @GET("users/search/{username}")
+    Call<List<ListModel>> search(@Path("username") String username);
 
     @GET("/reviews/reviews/{postid}")
     Call<List<Review>> getReviews(@Path("postid") String postid);

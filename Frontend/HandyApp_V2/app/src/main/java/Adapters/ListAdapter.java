@@ -73,7 +73,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
                                 }
 
-                                holder.name.setText(username);
+                                     holder.name.setText(username);
 
                             } else {
 

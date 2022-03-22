@@ -53,6 +53,7 @@
     <string name="or_sign_in_with">or Sign In with</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="publishablekey">sk_test_pk_test_51KaeHVH2uQT2W8eXtF7YgUv6J1T617qWJ73hbQ3HxMpldJDD1H7CGvMplRiNhjq9UsY6B0NjlZuEJ40m8CL7vIGk00cWeYkRyz</string>
 
 
 </resources>

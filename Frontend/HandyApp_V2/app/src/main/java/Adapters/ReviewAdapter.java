@@ -44,7 +44,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     @Override
     public ReviewAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.seller_review_list, parent, false);
-
         return new ReviewAdapter.MyViewHolder(v);
     }
 
@@ -52,7 +51,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
     public void onBindViewHolder(@NonNull ReviewAdapter.MyViewHolder holder, int position) {
 
         Review review = list.get(position);
-//        holder.name.setText(listModel.getUid());
         holder.name.setText(review.getUid());
         holder.review.setText(review.getReview());
 

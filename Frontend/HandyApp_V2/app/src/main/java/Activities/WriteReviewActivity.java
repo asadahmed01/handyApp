@@ -8,17 +8,19 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.handyapp_v2.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.POST;
 
 public class WriteReviewActivity extends AppCompatActivity {
 
@@ -30,6 +32,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     private String proID = "",uid;
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,11 +76,22 @@ public class WriteReviewActivity extends AppCompatActivity {
         map.put("rate",count);
         map.put("uid",uid);
 
-        firebaseFirestore.collection("data").document(proID).collection("Reviews")
-                .document(uid).set(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+        apiInterface = ApiInterface.retrofit.create(ApiInterface.class);
+
+        Call<POST> call = apiInterface.newreview(review, proID, count, uid);
+
+        call.enqueue(new Callback<POST>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(WriteReviewActivity.this, "Review Uploaded", Toast.LENGTH_SHORT).show();
+            public void onResponse(Call<POST> call, Response<POST> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(WriteReviewActivity.this, "Review Uploaded", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<POST> call, Throwable t) {
+                Toast.makeText(WriteReviewActivity.this, "", Toast.LENGTH_SHORT).show();
                 finish();
 
             }

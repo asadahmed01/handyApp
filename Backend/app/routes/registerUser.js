@@ -112,5 +112,18 @@ router.get("/getalldata", async (req, res) => {
     res.status(200).send(result);
   });
 });
+router.get("/search/:username", async (req, res) => {
+  const username = req.params.username.toLowerCase();
+  sql.query(
+    `SELECT username FROM data where username = '${username}'`,
+    async (err, result) => {
+      if (err) {
+        console.log(err);
+        return res.status(409).send({ msg: err });
+      }
+      res.status(200).send(result);
+    }
+  );
+});
 
 module.exports = router;

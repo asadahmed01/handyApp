@@ -7,6 +7,8 @@ const reviewsRoutes = require("./app/routes/reviews.routes.js");
 const addressRoutes = require("./app/routes/address.routes.js");
 const categoriesRoutes = require("./app/routes/categories.routes.js");
 const users = require("./app/routes/registerUser.js");
+const reviews = require("./app/routes/reviews");
+
 const app = express();
 //*********************//
 app.use(cors());
@@ -30,6 +32,7 @@ app.use("/reviews", reviewsRoutes);
 app.use("/address", addressRoutes);
 app.use("/categories", categoriesRoutes);
 app.use("/users", users);
+app.use("/reviews", reviews);
 // Handling Errors
 app.use((err, req, res, next) => {
   // console.log(err);

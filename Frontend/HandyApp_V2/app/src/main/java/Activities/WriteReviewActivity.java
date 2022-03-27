@@ -91,7 +91,7 @@ public class WriteReviewActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<POST> call, Throwable t) {
-                Toast.makeText(WriteReviewActivity.this, "", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(WriteReviewActivity.this, "Failed", Toast.LENGTH_SHORT).show();
                 finish();
 
             }

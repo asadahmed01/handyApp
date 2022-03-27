@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +28,7 @@ import java.util.List;
 import Activities.models.ListModel;
 import Activities.models.Review;
 import Adapters.ReviewAdapter;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,8 +49,10 @@ public class SellerDetailsActivity extends AppCompatActivity {
     Review review;
     ArrayList<Review> list= new ArrayList<Review>();
     ApiInterface apiInterface;
-
+    CircleImageView user_image;
     FirebaseFirestore firestore;
+    int number;
+    ImageView image;
     String sprice;
     private int id ;
     String Price;
@@ -63,8 +69,6 @@ public class SellerDetailsActivity extends AppCompatActivity {
         skills = findViewById(R.id.seller_skills);
         price = findViewById(R.id.sellerprice);
         description = findViewById(R.id.seller_description);
-        category = findViewById(R.id.seller_category);
-        address = findViewById(R.id.seller_address);
         loading = findViewById(R.id.loading);
         makePayment = findViewById(R.id.make_payment);
         loading.setVisibility(View.VISIBLE);
@@ -73,7 +77,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
         rate = findViewById(R.id.rate);
         firestore = FirebaseFirestore.getInstance();
         review = new Review();
-
+        user_image = findViewById(R.id.userImage);
         floatingActionButton = findViewById(R.id.floatingActionButton);
 
         giveReview.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +104,18 @@ public class SellerDetailsActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<List<ListModel>> call, Response<List<ListModel>> response) {
                 if (response.isSuccessful()){
-                    for (ListModel listModel: response.body()){
-                        skills.append("Skills: "+listModel.getSkills());
-                        category.append(""+listModel.getCategory());
 
-                        description.append("Description: "+listModel.getDescription());
-                        price.append(listModel.getPrice());
+
+                    for (ListModel listModel: response.body()){
+                        skills.append(listModel.getSkills());
+                        //category.append(""+listModel.getCategory());
+
+
+
+
+                        //user_image.setImageResource(Integer.parseInt(listModel.getImageURL()));
+                        description.append(listModel.getDescription());
+                        price.append("$ " + listModel.getPrice() + "/hr");
                         Price = listModel.getPrice();
                         floatingActionButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -140,7 +150,16 @@ public class SellerDetailsActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot dataSnapshot = task.getResult();
+
                     if (dataSnapshot.exists()) {
+
+                        try {
+                            String imageurl = dataSnapshot.get("imageURL").toString();
+                            Picasso.get().load(imageurl).into(user_image);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         sname = dataSnapshot.get("username").toString();
                         String receiveremail = dataSnapshot.get("email").toString();
                         makePayment.setOnClickListener(new View.OnClickListener() {
@@ -157,7 +176,7 @@ public class SellerDetailsActivity extends AppCompatActivity {
                         final String sAddress = dataSnapshot.get("Address").toString();
                         loading.setVisibility(View.GONE);
                         name.setText(sname);
-                        address.setText(sAddress);
+                        //address.setText(sAddress);
 
                     }
 

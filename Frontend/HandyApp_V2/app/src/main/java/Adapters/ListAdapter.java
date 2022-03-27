@@ -49,7 +49,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
         ListModel listModel = list.get(position);
         holder.title.setText(listModel.getCategory());
-        holder.price.setText(listModel.getPrice());
+        holder.price.setText("$ " + listModel.getPrice() + "/hr");
 
         firebaseFirestore = FirebaseFirestore.getInstance();
 

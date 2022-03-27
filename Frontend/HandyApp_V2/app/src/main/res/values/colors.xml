@@ -36,4 +36,13 @@
     <color name="blue_5c97cc">#5c97cc</color>
     <color name="red_light_ffe0de">#ffe0de</color>
     <color name="light_green_c7e7df">#c7e7df</color>
+
+
+    <color name="light_green">#5bbc59</color>
+    <color name="dark_green">#248e50</color>
+    <color name="light_purple">#bf40ff</color>
+
+
+
+
 </resources>
